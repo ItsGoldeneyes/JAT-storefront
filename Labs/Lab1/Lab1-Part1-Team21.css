@@ -22,3 +22,11 @@ img {
     max-width: 100%;
     height: auto;
 }
+
+#text {
+    margin-bottom: 10px;
+}
+
+#type, #action {
+    margin-bottom: 20;
+}
