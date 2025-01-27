@@ -1,29 +1,33 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet", href="Lab1-Part1-Team21.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Lab1-Part1-Team21.css">
     <title>Electronics-Center</title>
 </head>
-
-
 <body>
     <h1>Electronics-Center</h1>
 
-    <input type="text" id="text" name="Text box">
+    <input type="text" id="text" name="Text box" placeholder="Search..">
 
-    <br>
-    <select name="type", id="type">
-        <option value="laptop">Laptop</option>
-        <option value="notebook">NoteBook</option>
-        <option value="tablet">Tablet</option>
-        <option value="cellphone">CellPhone</option>
-    </select>
-
-    <select name="action", id="action">
-        <option value="archive">Archive</option>
-        <option value="edit">Edit</option>
-        <option value="delete">Delete</option>
-        <option value="collection">Collection</option>
-    </select>
+    <div class="drop-down-list">
+        <select name="type" id="type">
+            <option value="" disabled selected>Type</option>
+            <option value="0">Laptop</option>
+            <option value="1">NoteBook</option>
+            <option value="2">Tablet</option>
+            <option value="3">CellPhone</option>
+        </select>
+        
+        <select name="action" id="action">
+            <option value="" disabled selected>Action</option>
+            <option value="0">Archive</option>
+            <option value="1">Edit</option>
+            <option value="2">Delete</option>
+            <option value="3">Collection</option>
+        </select>
+    </div>
 
     <table>
         <tr>
@@ -36,15 +40,17 @@
         </tr>
         <tr>
             <td>
-                <input type="radio" id="fadein">
-                <img src="laptop.png" alt="Laptop">
+                <div class="radio-image-container">
+                    <input type="radio" id="fadein">
+                    <img src="assets/laptop.png" alt="Laptop">
+                </div>
             </td>
             <td>Surface Laptop Go 3</td>
             <td>Microsoft</td>
             <td>2023</td>
             <td>Laptop</td>
             <td>
-                <div id="actionbuttoncontainer">
+                <div class="action-button-container">
                     <a href="https://google.com"><button type="button">A</button></a>
                     <a href="https://google.com"><button type="button">A</button></a>
                     <a href="https://google.com"><button type="button">A</button></a>
@@ -54,15 +60,17 @@
         </tr>
         <tr>
             <td>
-                <input type="radio", id="fadein">
-                <img src="notebook.jpg" alt="Notebook">
+                <div class="radio-image-container">
+                    <input type="radio" id="fadein">
+                    <img src="assets/notebook.jpg" alt="Notebook">
+                </div>
             </td>
             <td>Yoga 9i</td>
             <td>Lenovo</td>
             <td>2024</td>
             <td>NoteBook</td>
             <td>
-                <div id="actionbuttoncontainer">
+                <div class="action-button-container">
                     <a href="https://google.com"><button type="button">A</button></a>
                     <a href="https://google.com"><button type="button">A</button></a>
                     <a href="https://google.com"><button type="button">A</button></a>
@@ -72,15 +80,17 @@
         </tr>
         <tr>
             <td>
-                <input type="radio", id="fadein">
-                <img src="tablet.jpg" alt="Tablet">
+                <div class="radio-image-container">
+                    <input type="radio" id="fadein">
+                    <img src="assets/tablet.jpg" alt="Tablet">
+                </div>
             </td>
             <td>iPad (10th Generation)</td>
             <td>Apple</td>
             <td>2022</td>
             <td>Tablet</td>
             <td>
-                <div id="actionbuttoncontainer">
+                <div class="action-button-container">
                     <a href="https://google.com"><button type="button">A</button></a>
                     <a href="https://google.com"><button type="button">A</button></a>
                     <a href="https://google.com"><button type="button">A</button></a>
@@ -90,15 +100,17 @@
         </tr>
         <tr>
             <td>
-                <input type="radio", id="fadein">
-                <img src="phone.jpeg" alt="Cellphone">
+                <div class="radio-image-container">
+                    <input type="radio" id="fadein">
+                    <img src="assets/phone.jpeg" alt="Cellphone">
+                </div>
             </td>
             <td>iPhone 13 Pro</td>
             <td>Apple</td>
             <td>2021</td>
             <td>CellPhone</td>
             <td>
-                <div id="actionbuttoncontainer">
+                <div class="action-button-container">
                     <a href="https://google.com"><button type="button">A</button></a>
                     <a href="https://google.com"><button type="button">A</button></a>
                     <a href="https://google.com"><button type="button">A</button></a>
@@ -110,7 +122,5 @@
 
     </table>
 </body>
-
-
 
 </html>
