@@ -58,7 +58,7 @@ img {
     margin-bottom: 20;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 720px) {
     table {
         font-size: 14px;
     }
@@ -68,11 +68,11 @@ img {
     }
 
     img {
-        max-width: 70%;
+        max-width: 80%;
     }
 
     .radio-image-container {
-        gap: 8px;
+        flex-direction: column;
     }
 }
 
@@ -88,11 +88,5 @@ img {
     img {
         max-width: 60%;
     }
-
-    .radio-image-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
     
 }
