@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Lab1-Part1-Team21.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <title>Electronics-Center</title>
     <style>
 .radio-fade-container input[type="radio"] {
@@ -242,8 +244,16 @@
                 var targetInfo = $(this).closest("tr").find(".fadeInfo");
                 targetInfo.fadeOut();
             });
-        });
 
+            $("tr").hover(
+                function () {
+                    $(this).animate({ backgroundColor: "#c7e0f4" }, 300);
+                },
+                function () {
+                    $(this).animate({ backgroundColor: "#ffffff" }, 300);
+                }
+            );
+        });
 
     </script>
 </body>
