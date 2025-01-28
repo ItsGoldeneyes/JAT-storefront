@@ -9,46 +9,45 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <title>Electronics-Center</title>
     <style>
-.radio-fade-container input[type="radio"] {
+    .radio-fade-container input[type="radio"] {
         appearance: none;
         width: 15px;
         height: 15px;
-        border: 2px solid #ccc;
         border-radius: 50%;
         margin: 0 5px;
         position: relative;
     }
 
-    .fadeInRadio {
-        background-color: pink; 
+    .fadeInImgRadio {
+        border: 2px solid pink;
     }
 
-    .fadeOutRadio {
-        background-color: blue;
+    .fadeOutImgRadio {
+        border: 2px solid blue;
     }
 
     .fadeInInfoRadio {
-        background-color: purple; 
+        border: 2px solid green; 
     }
 
     .fadeOutInfoRadio {
-        background-color: orange;
+        border: 2px solid red;
     }
 
-    .fadeInRadio:checked {
-        background-color: black; 
+    .fadeInImgRadio:checked {
+        background-color: grey; 
     }
 
-    .fadeOutRadio:checked {
-        background-color: black; 
+    .fadeOutImgRadio:checked {
+        background-color: grey; 
     }
 
     .fadeInInfoRadio:checked {
-        background-color: black; 
+        background-color: grey; 
     }
 
     .fadeOutInfoRadio:checked {
-        background-color: black; 
+        background-color: grey; 
     }
 
     img {
@@ -109,8 +108,8 @@
             <td>
                 <div class="radio-image-container">
                     <div class="radio-fade-container">
-                        <input type="radio" name="fadeIn1" class="fadeInRadio" id="fadeIn1">
-                        <input type="radio" name="fadeOut1" class="fadeOutRadio" id="fadeOut1">
+                        <input type="radio" name="fadeInImg1" class="fadeInImgRadio" id="fadeInImg1">
+                        <input type="radio" name="fadeOutImg1" class="fadeOutImgRadio" id="fadeOutImg1">
                     </div> 
                     <img src="assets/laptop.png" alt="Laptop" class="fadeImage">
                     <div class="radio-fade-container">
@@ -136,8 +135,8 @@
             <td>
                 <div class="radio-image-container">
                     <div class="radio-fade-container">
-                        <input type="radio" name="fadeIn2" class="fadeInRadio" id="fadeIn2">
-                        <input type="radio" name="fadeOut2" class="fadeOutRadio" id="fadeOut2">
+                        <input type="radio" name="fadeInImg2" class="fadeInImgRadio" id="fadeInImg2">
+                        <input type="radio" name="fadeOutImg2" class="fadeOutImgRadio" id="fadeOutImg2">
                     </div>
                     <img src="assets/notebook.jpg" alt="Notebook" class="fadeImage">
                     <div class="radio-fade-container">
@@ -163,8 +162,8 @@
             <td>
                 <div class="radio-image-container">
                     <div class="radio-fade-container">
-                        <input type="radio" name="fadeIn3" class="fadeInRadio" id="fadeIn3">
-                        <input type="radio" name="fadeOut3" class="fadeOutRadio" id="fadeOut3">
+                        <input type="radio" name="fadeInImg3" class="fadeInImgRadio" id="fadeInImg3">
+                        <input type="radio" name="fadeOutImg3" class="fadeOutImgRadio" id="fadeOutImg3">
                     </div>
                     <img src="assets/tablet.jpg" alt="Tablet" class="fadeImage">
                     <div class="radio-fade-container">
@@ -190,8 +189,8 @@
             <td>
                 <div class="radio-image-container">
                     <div class="radio-fade-container">
-                        <input type="radio" name="fadeIn1" class="fadeInRadio" id="fadeIn4">
-                        <input type="radio" name="fadeOut1" class="fadeOutRadio" id="fadeOut4">
+                        <input type="radio" name="fadeInImg1" class="fadeInImgRadio" id="fadeInImg4">
+                        <input type="radio" name="fadeOutImg1" class="fadeOutImgRadio" id="fadeOutImg4">
                     </div>
                     <img src="assets/phone.jpeg" alt="Cellphone" class="fadeImage">
                     <div class="radio-fade-container">
@@ -220,14 +219,14 @@
     <script>
         $(document).ready(function(){
             // fade image
-            $(".fadeInRadio").click(function(){
-                $(this).closest("td").find(".fadeOutRadio").prop("checked", false); // uncheck fade out radio button
+            $(".fadeInImgRadio").click(function(){
+                $(this).closest("td").find(".fadeOutImgRadio").prop("checked", false); // uncheck fade out radio button
                 var targetImg = $(this).closest("td").find(".fadeImage"); // find image within cell
                 targetImg.fadeIn();
             });
 
-            $(".fadeOutRadio").click(function(){
-                $(this).closest("td").find(".fadeInRadio").prop("checked", false); // uncheck fade in radio button
+            $(".fadeOutImgRadio").click(function(){
+                $(this).closest("td").find(".fadeInImgRadio").prop("checked", false); // uncheck fade in radio button
                 var targetImg = $(this).closest("td").find(".fadeImage"); // find image within cell
                 targetImg.fadeOut();
             });
@@ -245,6 +244,7 @@
                 targetInfo.fadeOut();
             });
 
+            // animation (part 2.2)
             $("tr").hover(
                 function () {
                     $(this).animate({ backgroundColor: "#c7e0f4" }, 300);
