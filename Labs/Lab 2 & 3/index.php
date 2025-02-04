@@ -1,5 +1,6 @@
 <?php
-include 'db.php';
+// include 'db.php';
+include 'db_mysql_server.php';
 ?>
 <!DOCTYPE html>
 <html>
