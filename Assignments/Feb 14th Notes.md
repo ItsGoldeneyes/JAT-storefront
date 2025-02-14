@@ -79,3 +79,4 @@ Expensses(50);
 
     - Is answer 300, 250, 200, Compile error
     - Answer = b
+    - Because global variable
