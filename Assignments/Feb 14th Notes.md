@@ -79,4 +79,4 @@ Expensses(50);
 
     - Is answer 300, 250, 200, Compile error
     - Answer = b
-    - Because global variable
+    - Because global variable, declaring variable inside of function creates new local variable which is not what we print at the end
