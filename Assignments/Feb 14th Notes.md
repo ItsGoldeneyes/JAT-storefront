@@ -55,6 +55,7 @@ else {echo $a;}
 ```
 
     - is answer 0, 1, 01, None of above
+    - Answer = B
 
 
   - What is the output of following code?
