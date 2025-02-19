@@ -53,5 +53,20 @@ def signup():
         print(f"Error signing up: {e}")
         return jsonify({"success": False, "message": "Internal server error"}), 500
 
+@app.route('/update_user', methods=['POST'])
+def update_user():
+    data = request.get_json()
+    email = data['email']
+    name = data.get('name', '')
+
+    try:
+        print(f"Attempting to update user with email: {email} and name: {name}")
+        cursor.execute("UPDATE users SET name=%s WHERE email=%s", (name, email))
+        conn.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        print(f"Error updating user: {e}")
+        return jsonify({"success": False, "message": "Internal server error"}), 500
+
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))

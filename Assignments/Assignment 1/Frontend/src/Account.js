@@ -51,6 +51,29 @@ function Account() {
     }
   };
 
+  const handleUpdateUser = async (event) => {
+    event.preventDefault();
+    const name = event.target.name.value;
+    try {
+      console.log(`Attempting to update user with email: ${email} and name: ${name}`);
+      const response = await axios.post('https://backend-production-d4be.up.railway.app/update_user', {
+        email: email,
+        name: name
+      });
+      if (response.data.success) {
+        alert('User details updated successfully');
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      if (error.code === 'ERR_NETWORK') {
+        alert('Network error. Please check your connection and try again.');
+      } else {
+        console.error('Error updating user:', error);
+      }
+    }
+  };
+
   const handleSignOut = () => {
     setIsSignedIn(false);
     Cookies.remove('access_token');
@@ -80,7 +103,7 @@ function Account() {
       ) : (
         <div>
           <h2>Account Details</h2>
-          <form>
+          <form onSubmit={handleUpdateUser}>
             <label>
               Name:
               <input type="text" name="name" />
