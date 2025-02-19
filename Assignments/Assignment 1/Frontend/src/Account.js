@@ -16,7 +16,7 @@ function Account() {
       });
       if (response.data.success) {
         setIsSignedIn(true);
-        Cookies.set('access_token', 'your_access_token', { expires: 365 });
+        Cookies.set('access_token', response.data.token, { expires: 1 });
       } else {
         alert('Invalid email or password');
       }
@@ -38,7 +38,7 @@ function Account() {
       });
       if (response.data.success) {
         setIsSignedIn(true);
-        Cookies.set('access_token', 'your_access_token', { expires: 365 });
+        Cookies.set('access_token', response.data.token, { expires: 1 });
       } else {
         alert(response.data.message);
       }
@@ -59,6 +59,10 @@ function Account() {
       const response = await axios.post('https://backend-production-d4be.up.railway.app/update_user', {
         email: email,
         name: name
+      }, {
+        headers: {
+          'Authorization': `Bearer ${Cookies.get('access_token')}`
+        }
       });
       if (response.data.success) {
         alert('User details updated successfully');
