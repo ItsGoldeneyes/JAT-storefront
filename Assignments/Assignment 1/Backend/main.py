@@ -2,8 +2,9 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 import psycopg2
 import os
-import jwt
 import datetime
+import random
+import string
 
 app = Flask(__name__)
 CORS(app)
@@ -21,11 +22,8 @@ conn = psycopg2.connect(
 cursor = conn.cursor()
 
 def generate_token(email):
-    payload = {
-        'email': email,
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)
-    }
-    return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+    random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+    return f"{email}:{random_string}:{SECRET_KEY}"
 
 def token_required(f):
     def decorator(*args, **kwargs):
@@ -33,10 +31,14 @@ def token_required(f):
         if not token:
             return jsonify({"success": False, "message": "Token is missing"}), 401
         try:
-            jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            return jsonify({"success": False, "message": "Token has expired"}), 401
-        except jwt.InvalidTokenError:
+            email, random_string, secret = token.split(':')
+            if secret != SECRET_KEY:
+                raise ValueError("Invalid token")
+            cursor.execute("SELECT * FROM users WHERE email=%s AND access_token=%s", (email, token))
+            user = cursor.fetchone()
+            if not user:
+                raise ValueError("Invalid token")
+        except Exception:
             return jsonify({"success": False, "message": "Invalid token"}), 401
         return f(*args, **kwargs)
     return decorator
@@ -53,6 +55,8 @@ def signin():
         user = cursor.fetchone()
         if user:
             token = generate_token(email)
+            cursor.execute("UPDATE users SET access_token=%s WHERE email=%s", (token, email))
+            conn.commit()
             response = make_response(jsonify({"success": True}))
             response.set_cookie('access_token', token, httponly=True)
             return response
@@ -74,9 +78,9 @@ def signup():
         user = cursor.fetchone()
         if user:
             return jsonify({"success": False, "message": "Email already exists"}), 400
-        cursor.execute("INSERT INTO users (email, password) VALUES (%s, %s)", (email, password))
-        conn.commit()
         token = generate_token(email)
+        cursor.execute("INSERT INTO users (email, password, access_token) VALUES (%s, %s, %s)", (email, password, token))
+        conn.commit()
         response = make_response(jsonify({"success": True}))
         response.set_cookie('access_token', token, httponly=True)
         return response
