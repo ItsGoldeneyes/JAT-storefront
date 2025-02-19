@@ -23,6 +23,7 @@ def signin():
     password = data['password']
 
     try:
+        print(f"Attempting sign-in with email: {email} and password: {password}")
         cursor.execute("SELECT * FROM users WHERE email=%s AND password=%s", (email, password))
         user = cursor.fetchone()
         if user:

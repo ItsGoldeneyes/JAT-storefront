@@ -9,6 +9,7 @@ function Account() {
 
   const handleSignIn = async () => {
     try {
+      console.log(`Attempting sign-in with email: ${email} and password: ${password}`);
       const response = await axios.post('https://backend-production-d4be.up.railway.app/signin', {
         email: email,
         password: password
