@@ -65,6 +65,7 @@ def update_user():
         conn.commit()
         return jsonify({"success": True})
     except Exception as e:
+        conn.rollback()  # Rollback the transaction in case of error
         print(f"Error updating user: {e}")
         return jsonify({"success": False, "message": "Internal server error"}), 500
 
