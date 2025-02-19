@@ -29,6 +29,28 @@ function Account() {
     }
   };
 
+  const handleSignUp = async () => {
+    try {
+      console.log(`Attempting sign-up with email: ${email} and password: ${password}`);
+      const response = await axios.post('https://backend-production-d4be.up.railway.app/signup', {
+        email: email,
+        password: password
+      });
+      if (response.data.success) {
+        setIsSignedIn(true);
+        Cookies.set('access_token', 'your_access_token', { expires: 365 });
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      if (error.code === 'ERR_NETWORK') {
+        alert('Network error. Please check your connection and try again.');
+      } else {
+        console.error('Error signing up:', error);
+      }
+    }
+  };
+
   const handleSignOut = () => {
     setIsSignedIn(false);
     Cookies.remove('access_token');
@@ -53,6 +75,7 @@ function Account() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <button onClick={handleSignIn}>Sign In</button>
+          <button onClick={handleSignUp}>Sign Up</button>
         </div>
       ) : (
         <div>

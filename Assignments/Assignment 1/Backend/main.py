@@ -34,5 +34,24 @@ def signin():
         print(f"Error signing in: {e}")
         return jsonify({"success": False, "message": "Internal server error"}), 500
 
+@app.route('/signup', methods=['POST'])
+def signup():
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+
+    try:
+        print(f"Attempting sign-up with email: {email} and password: {password}")
+        cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
+        user = cursor.fetchone()
+        if user:
+            return jsonify({"success": False, "message": "Email already exists"}), 400
+        cursor.execute("INSERT INTO users (email, password) VALUES (%s, %s)", (email, password))
+        conn.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        print(f"Error signing up: {e}")
+        return jsonify({"success": False, "message": "Internal server error"}), 500
+
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
