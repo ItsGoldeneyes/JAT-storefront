@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import psycopg2
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -15,7 +16,7 @@ conn = psycopg2.connect(
 )
 cursor = conn.cursor()
 
-@app.route('/api/signin', methods=['POST'])
+@app.route('/signin', methods=['POST'])
 def signin():
     data = request.get_json()
     email = data['email']
@@ -33,4 +34,4 @@ def signin():
         return jsonify({"success": False, "message": "Internal server error"}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True, port=os.getenv("PORT", default=5000))
