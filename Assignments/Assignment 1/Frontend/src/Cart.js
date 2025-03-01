@@ -1,37 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GoogleMapsComponent from './GoogleMaps';
 
 function Cart() {
-  const [cartItems, setCartItems] = useState([
-    { 
-      name: "Samsung Galaxy S25 Ultra 512GB Titanium Silverwhite", 
-      image: "assets/samsung_galaxy_ultra.png", 
-      price: 2098.99,
-      quantity: 1,
-      selected: false
-    },
-    { 
-      name: "Apple MacBook Pro 14.2\" 2024 1TB Space Black", 
-      image: "assets/2024_macbook_pro.png", 
-      price: 2349.99,
-      quantity: 1,
-      selected: false
-    },
-    { 
-      name: "Apple iPhone 15 128GB Pink", 
-      image: "assets/iphone15.png", 
-      price: 999.99,
-      quantity: 1,
-      selected: false
-    },
-    { 
-      name: "HP Omnibook X 14\" 1TB Glacier Silver", 
-      image: "assets/hp_omnibook.png", 
-      price: 1349.99,
-      quantity: 1,
-      selected: false
+  const [cartItems, setCartItems] = useState([]);
+  const [initialLoad, setInitialLoad] = useState(true);
+
+  useEffect(() => {
+    const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    console.log("Loaded items from localStorage:", storedItems);
+    setCartItems(storedItems);
+    setInitialLoad(false);
+  }, []);
+
+  useEffect(() => {
+    if (!initialLoad) {
+      console.log("Saving items to localStorage:", cartItems);
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
     }
-  ]);
+  }, [cartItems, initialLoad]);
 
   const toggleSelect = (index) => {
     const updatedCart = [...cartItems];
@@ -79,10 +65,10 @@ function Cart() {
             {cartItems.map((val, key) => (
               <tr key={key}>
                 <td>
-                <input 
-                    type="checkbox" 
-                    checked={val.selected} 
-                    onChange={() => toggleSelect(key)} 
+                <input
+                    type="checkbox"
+                    checked={val.selected}
+                    onChange={() => toggleSelect(key)}
                   />
                 </td>
                 <td><img src={val.image} alt={val.name} width="100" /></td>
@@ -90,7 +76,7 @@ function Cart() {
                 <td>${val.price}</td>
                 <td>
                   <button onClick={() => decrementQuantity(key)}>-</button>
-                  {val.quantity}
+                  {val.quantity || 1}
                   <button onClick={() => incrementQuantity(key)}>+</button>
                 </td>
                 <td>
@@ -109,50 +95,3 @@ function Cart() {
 }
 
 export default Cart;
-
-
-
-
-
-// import React from 'react';
-
-// function Cart() {
-
-//   const cart_items = [
-//     { name: "Samsung Galaxy S25 Ultra 512GB Titanium Silverwhite", 
-//       image: "assets/samsung_galaxy_ultra.png", 
-//       price: "2098.99" },
-
-//     { name: "Apple MacBook Pro 14.2\" 2024 1TB Space Black", 
-//       image: "assets/2024_macbook_pro.png", 
-//       price: "2349.99" },
-
-//     { name: "Apple iPhone 15 128GB Pink", 
-//       image: "assets/iphone15.png", 
-//       price: "999.99" },
-
-//     { name: "HP Omnibook X 14\" 1TB Glacier Silver", 
-//       image: "assets/hp_omnibook.png", 
-//       price: "1349.99" }
-//   ]
-
-//   return (
-//     <div>
-//       <h1>Shopping Cart</h1>
-//       <p>Your cart is currently empty.</p>
-
-//       <table>
-//         {cart_items.map((val, key) => {
-//           return (
-//             <tr key={key}>
-//                 <td><img src={val.image} alt={val.name}/></td>
-//                 <td> {val.name} {val.price}</td>
-//             </tr>
-//           )
-//         })}
-//       </table>
-//     </div>
-//   );
-// }
-
-// export default Cart;

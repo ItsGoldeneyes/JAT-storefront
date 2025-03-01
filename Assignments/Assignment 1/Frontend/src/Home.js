@@ -1,48 +1,63 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import './Home.css';
 
 
 function Home() {
 
   const phone_data = [
-    { name: "Samsung Galaxy S25 Ultra 512GB Titanium Silverwhite", 
-      image: "assets/samsung_galaxy_ultra.png", 
+    { name: "Samsung Galaxy S25 Ultra 512GB Titanium Silverwhite",
+      image: "assets/samsung_galaxy_ultra.png",
       price: "2098.99" },
 
-    { name: "Apple iPhone 16 Pro Max 256GB Black Titanium", 
-      image: "assets/iphone16.png", 
+    { name: "Apple iPhone 16 Pro Max 256GB Black Titanium",
+      image: "assets/iphone16.png",
       price: "1749.99" },
 
-    { name: "Apple iPhone 15 128GB Pink", 
-      image: "assets/iphone15.png", 
+    { name: "Apple iPhone 15 128GB Pink",
+      image: "assets/iphone15.png",
       price: "999.99" },
 
-    { name: "Samsung Galaxy S25 256GB Icyblue", 
-      image: "assets/samsung_galaxy.png", 
+    { name: "Samsung Galaxy S25 256GB Icyblue",
+      image: "assets/samsung_galaxy.png",
       price: "1288.99" },
   ]
 
   const laptop_data = [
-    { name: "Apple MacBook Pro 14.2\" 2024 1TB Space Black", 
-      image: "assets/2024_macbook_pro.png", 
+    { name: "Apple MacBook Pro 14.2\" 2024 1TB Space Black",
+      image: "assets/2024_macbook_pro.png",
       price: "2349.99" },
 
-    { name: "Apple MacBook Air 13\" 2024 512GB Midnight", 
-      image: "assets/macbook_air_13.png", 
+    { name: "Apple MacBook Air 13\" 2024 512GB Midnight",
+      image: "assets/macbook_air_13.png",
       price: "1699.99" },
 
     { name: "Microsoft Surface Laptop 13.8\" 1TB Sapphire",
-      image: "assets/microsoft_surface_13.png", 
+      image: "assets/microsoft_surface_13.png",
       price: "18.99" },
 
-    { name: "HP Omnibook X 14\" 1TB Glacier Silver", 
-      image: "assets/hp_omnibook.png", 
+    { name: "HP Omnibook X 14\" 1TB Glacier Silver",
+      image: "assets/hp_omnibook.png",
       price: "1349.99" }
-  
+
   ]
 
   const [selectedValue, setSelectedValue] = useState("");
   const [droppedItems, setDroppedItems] = useState([]);
+  const [initialLoad, setInitialLoad] = useState(true);
+
+  useEffect(() => {
+    const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    console.log("Loaded items from localStorage:", storedItems);
+    setDroppedItems(storedItems);
+    setInitialLoad(false);
+  }, []);
+
+  useEffect(() => {
+    if (!initialLoad) {
+      console.log("Saving items to localStorage:", droppedItems);
+      localStorage.setItem("cartItems", JSON.stringify(droppedItems));
+    }
+  }, [droppedItems, initialLoad]);
 
   const selectedDropdownOption = (event) => {
     setSelectedValue(event.target.value);
@@ -55,7 +70,20 @@ function Home() {
   const handleDrop = (event) => {
     event.preventDefault();
     const item = JSON.parse(event.dataTransfer.getData("text/plain"));
-    setDroppedItems((prevItems) => [...prevItems, item]);
+    setDroppedItems((prevItems) => {
+      const existingItem = prevItems.find((i) => i.name === item.name);
+      let updatedItems;
+      if (existingItem) {
+        updatedItems = prevItems.map((i) =>
+          i.name === item.name ? { ...i, quantity: i.quantity + 1 } : i
+        );
+      } else {
+        updatedItems = [...prevItems, { ...item, quantity: 1 }];
+      }
+      console.log("Updated items after drop:", updatedItems);
+      localStorage.setItem("cartItems", JSON.stringify(updatedItems));
+      return updatedItems;
+    });
   };
 
   const handleDragOver = (event) => {
@@ -78,7 +106,7 @@ function Home() {
         <option value="most-reviews">Most Reviews</option>
       </select>
     </div>
-      
+
       <h2>Phones</h2>
 
       <table>
@@ -140,15 +168,15 @@ function Home() {
         <ul>
           {droppedItems.map((item, index) => (
             <li key={index}>
-              <strong>{item.name}</strong> - ${item.price}
+              <strong>{item.name}</strong> - ${item.price} (Quantity: {item.quantity})
               <img src={item.image} alt={item.name} width="40" />
             </li>
           ))}
         </ul>
       </div>
-      
+
     </div>
-    
+
   );
 };
 
