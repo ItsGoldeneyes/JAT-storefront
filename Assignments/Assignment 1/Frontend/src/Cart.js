@@ -7,14 +7,14 @@ function Cart() {
 
   useEffect(() => {
     const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-    console.log("Loaded items from localStorage:", storedItems);
+    // console.log("Loaded items from localStorage:", storedItems);
     setCartItems(storedItems);
     setInitialLoad(false);
   }, []);
 
   useEffect(() => {
     if (!initialLoad) {
-      console.log("Saving items to localStorage:", cartItems);
+      // console.log("Saving items to localStorage:", cartItems);
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
     }
   }, [cartItems, initialLoad]);

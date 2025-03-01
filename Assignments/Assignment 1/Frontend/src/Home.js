@@ -47,14 +47,14 @@ function Home() {
 
   useEffect(() => {
     const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-    console.log("Loaded items from localStorage:", storedItems);
+    // console.log("Loaded items from localStorage:", storedItems);
     setDroppedItems(storedItems);
     setInitialLoad(false);
   }, []);
 
   useEffect(() => {
     if (!initialLoad) {
-      console.log("Saving items to localStorage:", droppedItems);
+      // console.log("Saving items to localStorage:", droppedItems);
       localStorage.setItem("cartItems", JSON.stringify(droppedItems));
     }
   }, [droppedItems, initialLoad]);
