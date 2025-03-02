@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import GoogleMapsComponent from './GoogleMaps';
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [initialLoad, setInitialLoad] = useState(true);
+  const [deliveryPrice, setDeliveryPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [deliveryTruck, setDeliveryTruck] = useState(null);
+  const [origin, setOrigin] = useState(null);
+  const [destination, setDestination] = useState(null);
+  const taxRate = 0.13;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
@@ -18,6 +27,19 @@ function Cart() {
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
     }
   }, [cartItems, initialLoad]);
+
+  useEffect(() => {
+    const totalItemPrice = cartItems.reduce((total, item) => {
+      if (item.selected) {
+        return total + item.price * (item.quantity || 1);
+      }
+      return total;
+    }, 0);
+
+      const tax = totalItemPrice * taxRate;
+      const newTotalPrice = (totalItemPrice + tax + parseFloat(deliveryPrice)).toFixed(2);
+      setTotalPrice(newTotalPrice);
+    }, [cartItems, deliveryPrice]);
 
   const toggleSelect = (index) => {
     const updatedCart = [...cartItems];
@@ -42,6 +64,18 @@ function Cart() {
   const deleteItem = (index) => {
     const updatedCart = cartItems.filter((_, idx) => idx !== index);
     setCartItems(updatedCart);
+  };
+
+  const handleConfirmOrder = () => {
+    navigate('/order-summary', {
+      state: {
+        cartItems: cartItems.filter((item) => item.selected),
+        totalPrice,
+        deliveryTruck,
+        origin,
+        destination,
+      },
+    });
   };
 
   return (
@@ -88,8 +122,41 @@ function Cart() {
         </table>
       )}
       <div>
-        <GoogleMapsComponent />
+        <GoogleMapsComponent 
+          setDeliveryPrice={setDeliveryPrice}
+          setDeliveryTruck={setDeliveryTruck}
+          setOrigin={setOrigin}
+          setDestination={setDestination}
+        />
       </div>
+      <div>
+        <h3>Subtotal (Items): ${cartItems.reduce((total, item) => {
+          if (item.selected) {
+            return total + item.price * (item.quantity || 1);
+          }
+          return total;
+        }, 0).toFixed(2)}</h3>
+        <h3>Tax (13%): ${(cartItems.reduce((total, item) => {
+          if (item.selected) {
+            return total + item.price * (item.quantity || 1);
+          }
+          return total;
+        }, 0) * taxRate).toFixed(2)}</h3>
+        <h2>Total Price: ${totalPrice}</h2>
+      </div>
+      <div>
+        <h3>Delivery Truck:</h3>
+        {deliveryTruck && <p>Assigned Truck: {deliveryTruck}</p>}
+      </div>
+      <div>
+        <h3>Starting Location:</h3>
+        {origin && <p>{origin}</p>}
+      </div>
+      <div>
+        <h3>Destination:</h3>
+        {destination && <p>{destination}</p>}
+      </div>
+      <button onClick={handleConfirmOrder}>Confirm Order</button>
     </div>
   );
 }
