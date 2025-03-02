@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 function Account() {
-  const backend = 'http://localhost/project1/'
+  const backend = 'http://localhost/Assignment1/'
 
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [email, setEmail] = useState('');
