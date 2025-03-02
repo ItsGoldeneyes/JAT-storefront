@@ -29,20 +29,6 @@ const GoogleMapsComponent = ({ setDeliveryPrice, setDeliveryTruck, setOrigin, se
     googleMapsApiKey: API_KEY
   });
 
-  const fetchLocationName = async (lat, lng) => {
-    const geocodingUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${API_KEY}`;
-    try {
-      const response = await fetch(geocodingUrl);
-      const data = await response.json();
-      if (data.status === "OK" && data.results[0]) {
-        return data.results[0].formatted_address;
-      }
-    } catch (error) {
-      console.error("Error fetching location name:", error);
-    }
-    return null;
-  };
-
   useEffect(() => {
     if (isLoaded) {
       navigator.geolocation.getCurrentPosition(
@@ -51,8 +37,8 @@ const GoogleMapsComponent = ({ setDeliveryPrice, setDeliveryTruck, setOrigin, se
             lat: position.coords.latitude,
             lng: position.coords.longitude
           });
-          const locationName = fetchLocationName(position.coords.latitude, position.coords.longitude);
-          setOrigin(locationName || "Unknown Location");
+          // TODO: pass the name of the location
+          setOrigin(`Lat: ${position.coords.latitude}, ${position.coords.longitude}`);
         },
         (error) => {
           console.warn("Geolocation denied, switching to manual input");
@@ -60,7 +46,7 @@ const GoogleMapsComponent = ({ setDeliveryPrice, setDeliveryTruck, setOrigin, se
         }
       );
     }
-  }, [isLoaded]);
+  }, [isLoaded, setOrigin]);
 
   useEffect(() => {
     if (isLoaded && currentPosition && selectedStore) {
