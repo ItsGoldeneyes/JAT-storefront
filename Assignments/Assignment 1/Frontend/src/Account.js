@@ -3,6 +3,8 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 function Account() {
+  const backend = 'http://localhost/project1/'
+
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,7 +12,7 @@ function Account() {
   const handleSignIn = async () => {
     try {
       console.log(`Attempting sign-in with email: ${email} and password: ${password}`);
-      const response = await axios.post('https://backend-production-d4be.up.railway.app/signin', {
+      const response = await axios.post(backend+'/signin', {
         email: email,
         password: password
       });
@@ -32,7 +34,7 @@ function Account() {
   const handleSignUp = async () => {
     try {
       console.log(`Attempting sign-up with email: ${email} and password: ${password}`);
-      const response = await axios.post('https://backend-production-d4be.up.railway.app/signup', {
+      const response = await axios.post(backend+'/signup', {
         email: email,
         password: password
       });
@@ -56,7 +58,7 @@ function Account() {
     const name = event.target.name.value;
     try {
       console.log(`Attempting to update user with email: ${email} and name: ${name}`);
-      const response = await axios.post('https://backend-production-d4be.up.railway.app/update_user', {
+      const response = await axios.post(backend+'/update_user', {
         email: email,
         name: name
       }, {

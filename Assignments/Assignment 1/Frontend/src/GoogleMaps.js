@@ -9,7 +9,7 @@ const storeLocations = [
 ];
 
 const BASE_DELIVERY_PRICE = 5;
-const PRICE_PER_KM = 0.50; 
+const PRICE_PER_KM = 0.50;
 const PROCESSING_TIME_HOURS = 6;
 const AVERAGE_SPEED_KMH = 40;
 
@@ -61,9 +61,9 @@ const GoogleMapsComponent = ({ setDeliveryPrice, setDeliveryTruck, setOrigin, se
           if (status === window.google.maps.DirectionsStatus.OK) {
             setDirections(result);
             const store = storeLocations.find(s => s.position === selectedStore);
-            setDeliveryTruck(store.deliveryTruck); 
+            setDeliveryTruck(store.deliveryTruck);
             setDestination(store.name);
-            
+
             // get distance
             const route = result.routes[0].legs[0];
             const distanceText = route.distance.text;
@@ -82,7 +82,7 @@ const GoogleMapsComponent = ({ setDeliveryPrice, setDeliveryTruck, setOrigin, se
             currentTime.setHours(currentTime.getHours() + totalHours);
 
             setEarliestDelivery(currentTime.toLocaleString());
-            
+
           } else {
             console.error(`Error fetching directions: ${status}`);
           }
@@ -107,7 +107,7 @@ const GoogleMapsComponent = ({ setDeliveryPrice, setDeliveryTruck, setOrigin, se
     try {
       const response = await fetch(geocodingUrl);
       const data = await response.json();
-      
+
       if (data.status === "OK") {
         const { lat, lng } = data.results[0].geometry.location;
         setCurrentPosition({ lat, lng });
@@ -133,11 +133,11 @@ const GoogleMapsComponent = ({ setDeliveryPrice, setDeliveryTruck, setOrigin, se
 
       {!geolocationAllowed && (
         <div>
-          <input 
-            type="text" 
-            placeholder="Enter your location..." 
-            value={manualLocation} 
-            onChange={(e) => setManualLocation(e.target.value)} 
+          <input
+            type="text"
+            placeholder="Enter your location..."
+            value={manualLocation}
+            onChange={(e) => setManualLocation(e.target.value)}
           />
           <button onClick={handleManualLocation}>Submit</button>
         </div>
