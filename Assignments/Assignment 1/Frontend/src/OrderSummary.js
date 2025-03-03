@@ -70,7 +70,7 @@ function OrderSummary() {
         <ul>
           {cartItems.map((item, index) => (
             <li key={index}>
-              {item.name} - ${item.price} x {item.quantity || 1}
+              {item.Item_name} - ${item.Price} x {item.quantity || 1}
             </li>
           ))}
         </ul>

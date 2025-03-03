@@ -8,3 +8,19 @@ INSERT INTO Truck (Truck_Code, Availability_Code) VALUES
 ('TRUCK-001', 'AVAILABLE'),
 ('TRUCK-002', 'UNAVAILABLE'),
 ('TRUCK-003', 'AVAILABLE');
+
+CREATE TABLE Item (
+    Item_Id INT AUTO_INCREMENT PRIMARY KEY,
+    Item_name VARCHAR(255) NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+    Made_in VARCHAR(100),
+    Department_Code VARCHAR(50),
+    Image_Path VARCHAR(255)  -- New field for the image path
+);
+
+INSERT INTO Item (Item_name, Price, Made_in, Department_Code, Image_Path) VALUES
+('Samsung Galaxy S25 Ultra 512GB Titanium Silverwhite', 2098.99, 'South Korea', 'ELECTRONICS', 'assets/samsung_galaxy_ultra.png'),
+('Apple iPhone 16 Pro Max 256GB Black Titanium', 1749.99, 'USA', 'ELECTRONICS', 'assets/iphone16.png'),
+('Apple iPhone 15 128GB Pink', 999.99, 'USA', 'ELECTRONICS', 'assets/iphone15.png'),
+('Samsung Galaxy S25 256GB Icyblue', 1288.99, 'South Korea', 'ELECTRONICS', 'assets/samsung_galaxy.png');
+

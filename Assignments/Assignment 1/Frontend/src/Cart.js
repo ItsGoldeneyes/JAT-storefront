@@ -33,7 +33,7 @@ function Cart() {
   useEffect(() => {
     const totalItemPrice = cartItems.reduce((total, item) => {
       if (item.selected) {
-        return total + item.price * (item.quantity || 1);
+        return total + item.Price * (item.quantity || 1);
       }
       return total;
     }, 0);
@@ -124,9 +124,9 @@ function Cart() {
                     onChange={() => toggleSelect(key)}
                   />
                 </td>
-                <td><img src={val.image} alt={val.name} width="100" /></td>
-                <td>{val.name}</td>
-                <td>${val.price}</td>
+                <td><img src={val.Image_Path} alt={val.Item_name} width="100" /></td>
+                <td>{val.Item_name}</td>
+                <td>${val.Price}</td>
                 <td>
                   <button onClick={() => decrementQuantity(key)}>-</button>
                   {val.quantity || 1}
@@ -160,13 +160,13 @@ function Cart() {
       <div>
         <h3>Subtotal (Items): ${cartItems.reduce((total, item) => {
           if (item.selected) {
-            return total + item.price * (item.quantity || 1);
+            return total + item.Price * (item.quantity || 1);
           }
           return total;
         }, 0).toFixed(2)}</h3>
         <h3>Tax (13%): ${(cartItems.reduce((total, item) => {
           if (item.selected) {
-            return total + item.price * (item.quantity || 1);
+            return total + item.Price * (item.quantity || 1);
           }
           return total;
         }, 0) * taxRate).toFixed(2)}</h3>
