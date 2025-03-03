@@ -4,22 +4,38 @@ import axios from 'axios';
 
 const containerStyle = { width: '100%', height: '400px' };
 
-const storeLocations = [
-  { name: "Store 1", position: { lat: 43.65808062403946, lng: -79.38138663721685 } },
-  { name: "Store 2", position: { lat: 44, lng: -80 } },
-];
-
 const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
   const [currentPosition, setCurrentPosition] = useState(null);
-  const [selectedStore, setSelectedStore] = useState(storeLocations[0].position);
+  const [selectedStore, setSelectedStore] = useState(null);
   const [map, setMap] = useState(null);
   const [trucks, setTrucks] = useState([]);
   const [selectedTruck, setSelectedTruck] = useState(null);
+  const [stores, setStores] = useState([]);
   const directionsRendererRef = useRef(null);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDTkwyTSOq5fh3ta9EZaIJRs1JNRUQWNbY"
   });
+
+  useEffect(() => {
+    const fetchStores = async () => {
+      try {
+        const response = await axios.get('http://localhost/Assignment1/get_stores.php');
+        if (response.data.success) {
+          setStores(response.data.data);
+          if (response.data.data.length > 0) {
+            setSelectedStore(response.data.data[0].position);
+          }
+        } else {
+          console.error('Error fetching stores:', response.data.error);
+        }
+      } catch (error) {
+        console.error('Error fetching stores:', error);
+      }
+    };
+
+    fetchStores();
+  }, []);
 
   useEffect(() => {
     const fetchTrucks = async () => {
@@ -83,10 +99,10 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
         }
       );
     }
-  }, [isLoaded, currentPosition, selectedStore, map, setRoute, trucks]);
+  }, [isLoaded, currentPosition, selectedStore, map, setRoute, selectedTruck]);
 
   const handleStoreChange = (event) => {
-    const selectedStore = storeLocations.find(store => store.name === event.target.value);
+    const selectedStore = stores.find(store => store.name === event.target.value);
     setSelectedStore(selectedStore.position);
     setSelectedTruck(null);
   };
@@ -104,8 +120,8 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
       <h2>Shipping</h2>
       <label htmlFor="store-select">Select Store:</label>
       <select id="store-select" onChange={handleStoreChange}>
-        {storeLocations.map(store => (
-          <option key={store.name} value={store.name}>{store.name}</option>
+        {stores.map(store => (
+          <option key={store.store_id} value={store.name}>{store.name}</option>
         ))}
       </select>
       {isLoaded && (
