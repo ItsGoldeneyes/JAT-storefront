@@ -12,6 +12,7 @@ function Cart() {
   const [destination, setDestination] = useState(null);
   const [route, setRoute] = useState(null);
   const [estimatedDeliveryTime, setEstimatedDeliveryTime] = useState(null);
+  const [distance, setDistance] = useState(null);
   const taxRate = 0.13;
 
   const navigate = useNavigate();
@@ -49,6 +50,8 @@ function Cart() {
 
       const calculatedDeliveryPrice = (distance.value * 0.0005).toFixed(2); 
       setDeliveryPrice(calculatedDeliveryPrice);
+
+      setDistance(distance.text);
 
       const currentDate = new Date();
       let estimatedDeliveryDate = new Date(currentDate.getTime() + duration.value * 1000);
@@ -93,6 +96,8 @@ function Cart() {
         deliveryTruck,
         origin,
         destination,
+        distance: parseFloat(distance),
+        deliveryPrice: parseFloat(deliveryPrice),
       },
     });
   };
@@ -149,7 +154,7 @@ function Cart() {
       <div>
         {route && (
           <>
-            <p>Distance to store: {route.distance.text}</p>
+            <p>Distance to store: {distance}</p>
             <p>Delivery Price: ${deliveryPrice}</p>
             {estimatedDeliveryTime && (
               <p>Estimated Delivery Date and Time: {estimatedDeliveryTime.toLocaleString()}</p>

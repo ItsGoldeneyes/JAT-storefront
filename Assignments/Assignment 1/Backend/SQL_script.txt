@@ -24,3 +24,11 @@ INSERT INTO Item (Item_name, Price, Made_in, Department_Code, Image_Path) VALUES
 ('Apple iPhone 15 128GB Pink', 999.99, 'USA', 'ELECTRONICS', 'assets/iphone15.png'),
 ('Samsung Galaxy S25 256GB Icyblue', 1288.99, 'South Korea', 'ELECTRONICS', 'assets/samsung_galaxy.png');
 
+CREATE TABLE Trip (
+    Trip_Id INT AUTO_INCREMENT PRIMARY KEY,
+    Source_Code VARCHAR(50) NOT NULL,
+    Destination_Code VARCHAR(50) NOT NULL,
+    Distance DECIMAL(10, 2) NOT NULL,
+    Truck_Id INT NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL
+);
