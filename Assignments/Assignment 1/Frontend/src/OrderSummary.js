@@ -165,18 +165,6 @@ function OrderSummary() {
           ))}
         </ul>
       </div>
-      <div>
-        <h2>Total Price: ${totalPrice}</h2>
-      </div>
-      <div>
-        <h2>Delivery Truck: {deliveryTruck}</h2>
-      </div>
-      <div>
-        <h2>Origin: {origin}</h2>
-      </div>
-      <div>
-        <h2>Destination: {destination}</h2>
-      </div>
       <form onSubmit={handlePaymentSubmit}>
         <h2>Payment Information</h2>
         <div>
@@ -212,6 +200,8 @@ function OrderSummary() {
         </div>
         <button type="submit">Submit Payment</button>
       </form>
+
+      <h1>Invoice</h1>
 
       {/* {error && !success && <p style={{ color: 'red' }}>{error}</p>}
       {success && <p style={{ color: 'green' }}>Order submitted successfully! Redirecting...</p>} */}
