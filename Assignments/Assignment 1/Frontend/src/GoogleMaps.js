@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleMap, Marker, DirectionsRenderer, useJsApiLoader } from '@react-google-maps/api';
+import axios from 'axios';
 
 const containerStyle = { width: '100%', height: '400px' };
 
@@ -8,20 +9,34 @@ const storeLocations = [
   { name: "Store 2", position: { lat: 44, lng: -80 } },
 ];
 
-const deliveryTrucks = {
-  "Store 1": "Truck 1",
-  "Store 2": "Truck 2",
-};
-
 const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
   const [currentPosition, setCurrentPosition] = useState(null);
   const [selectedStore, setSelectedStore] = useState(storeLocations[0].position);
   const [map, setMap] = useState(null);
+  const [trucks, setTrucks] = useState([]);
+  const [selectedTruck, setSelectedTruck] = useState(null);
   const directionsRendererRef = useRef(null);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDTkwyTSOq5fh3ta9EZaIJRs1JNRUQWNbY"
   });
+
+  useEffect(() => {
+    const fetchTrucks = async () => {
+      try {
+        const response = await axios.get('http://localhost/Assignment1/get_trucks.php');
+        if (response.data.success) {
+          setTrucks(response.data.data);
+        } else {
+          console.error('Error fetching trucks:', response.data.error);
+        }
+      } catch (error) {
+        console.error('Error fetching trucks:', error);
+      }
+    };
+
+    fetchTrucks();
+  }, []);
 
   useEffect(() => {
     if (isLoaded) {
@@ -59,16 +74,8 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
 
             setRoute(result.routes[0].legs[0]);
 
-            const store = storeLocations.find(
-              store =>
-                store.position.lat === selectedStore.lat &&
-                store.position.lng === selectedStore.lng
-            );
-
-            if (store) {
-              setDeliveryTruck(deliveryTrucks[store.name]);
-            } else {
-              console.error("Store not found");
+            if (selectedTruck) {
+              setDeliveryTruck(selectedTruck);
             }
           } else {
             console.error(`Error fetching directions: ${status}`);
@@ -76,12 +83,21 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
         }
       );
     }
-  }, [isLoaded, currentPosition, selectedStore, map, setRoute]);
+  }, [isLoaded, currentPosition, selectedStore, map, setRoute, trucks]);
 
   const handleStoreChange = (event) => {
     const selectedStore = storeLocations.find(store => store.name === event.target.value);
     setSelectedStore(selectedStore.position);
+    setSelectedTruck(null);
   };
+
+  const handleTruckChange = (event) => {
+    const truckCode = event.target.value;
+    setSelectedTruck(truckCode);
+    setDeliveryTruck(truckCode); 
+  };
+
+  const availableTrucks = trucks.filter(truck => truck.Availability_Code === 'AVAILABLE');
 
   return (
     <div>
@@ -103,6 +119,27 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
           <Marker position={selectedStore} label="Store" />
         </GoogleMap>
       )}
+      <div>
+        <h3>Available Trucks</h3>
+        <ul>
+          {trucks.map(truck => (
+            <li key={truck.Truck_Id}>
+              {truck.Truck_Code} - {truck.Availability_Code}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <label htmlFor="truck-select">Select Truck:</label>
+        <select id="truck-select" onChange={handleTruckChange} value={selectedTruck || ''}>
+          <option value="">Select a truck</option>
+          {availableTrucks.map(truck => (
+            <option key={truck.Truck_Id} value={truck.Truck_Code}>
+              {truck.Truck_Code} - {truck.Availability_Code}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 };
