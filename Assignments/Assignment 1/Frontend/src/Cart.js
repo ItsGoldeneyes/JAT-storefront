@@ -10,6 +10,8 @@ function Cart() {
   const [deliveryTruck, setDeliveryTruck] = useState(null);
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
+  const [route, setRoute] = useState(null);
+  const [estimatedDeliveryTime, setEstimatedDeliveryTime] = useState(null);
   const taxRate = 0.13;
 
   const navigate = useNavigate();
@@ -40,6 +42,23 @@ function Cart() {
       const newTotalPrice = (totalItemPrice + tax + parseFloat(deliveryPrice)).toFixed(2);
       setTotalPrice(newTotalPrice);
     }, [cartItems, deliveryPrice]);
+
+  useEffect(() => {
+    if (route) {
+      const { distance, duration } = route;
+
+      const calculatedDeliveryPrice = (distance.value * 0.0005).toFixed(2); 
+      setDeliveryPrice(calculatedDeliveryPrice);
+
+      const currentDate = new Date();
+      let estimatedDeliveryDate = new Date(currentDate.getTime() + duration.value * 1000);
+      estimatedDeliveryDate = new Date(estimatedDeliveryDate.getTime() + 24 * 60 * 60 * 1000); // adding 24 hours
+      setEstimatedDeliveryTime(estimatedDeliveryDate);
+
+      setDestination(route.end_address);
+      setOrigin(route.start_address);
+    }
+  }, [route]);
 
   const toggleSelect = (index) => {
     const updatedCart = [...cartItems];
@@ -123,11 +142,20 @@ function Cart() {
       )}
       <div>
         <GoogleMapsComponent 
-          setDeliveryPrice={setDeliveryPrice}
+          setRoute={setRoute}
           setDeliveryTruck={setDeliveryTruck}
-          setOrigin={setOrigin}
-          setDestination={setDestination}
         />
+      </div>
+      <div>
+        {route && (
+          <>
+            <p>Distance to store: {route.distance.text}</p>
+            <p>Delivery Price: ${deliveryPrice}</p>
+            {estimatedDeliveryTime && (
+              <p>Estimated Delivery Date and Time: {estimatedDeliveryTime.toLocaleString()}</p>
+            )}
+          </>
+        )}
       </div>
       <div>
         <h3>Subtotal (Items): ${cartItems.reduce((total, item) => {
@@ -146,7 +174,7 @@ function Cart() {
       </div>
       <div>
         <h3>Delivery Truck:</h3>
-        {deliveryTruck && <p>Assigned Truck: {deliveryTruck}</p>}
+        {deliveryTruck && <p>Available Truck: {deliveryTruck}</p>}
       </div>
       <div>
         <h3>Starting Location:</h3>
