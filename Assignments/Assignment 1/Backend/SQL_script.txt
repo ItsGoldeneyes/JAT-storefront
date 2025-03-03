@@ -44,3 +44,9 @@ CREATE TABLE Store (
 INSERT INTO Store (name, store_code, latitude, longitude) VALUES
 ('Store 1', 'STORE-001', 43.65808062, -79.38138663),
 ('Store 2', 'STORE-002', 44.00000000, -80.00000000);
+
+CREATE TABLE Shopping (
+    Receipt_Id INT AUTO_INCREMENT PRIMARY KEY,
+    Store_Code VARCHAR(50) NOT NULL,
+    Total_Price DECIMAL(10, 2) NOT NULL
+);

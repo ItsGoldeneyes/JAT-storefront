@@ -4,9 +4,9 @@ import axios from 'axios';
 
 const containerStyle = { width: '100%', height: '400px' };
 
-const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
+const GoogleMapsComponent = ({ setRoute, setDeliveryTruck, setSelectedStore }) => {
   const [currentPosition, setCurrentPosition] = useState(null);
-  const [selectedStore, setSelectedStore] = useState(null);
+  const [selectedStorePosition, setSelectedStorePosition] = useState(null);
   const [map, setMap] = useState(null);
   const [trucks, setTrucks] = useState([]);
   const [selectedTruck, setSelectedTruck] = useState(null);
@@ -14,7 +14,7 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
   const directionsRendererRef = useRef(null);
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyDTkwyTSOq5fh3ta9EZaIJRs1JNRUQWNbY"
+    googleMapsApiKey: "AIzaSyDTkwyTSOq5fh3ta9EZaIJRs1JNRUQWNbY" 
   });
 
   useEffect(() => {
@@ -24,7 +24,8 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
         if (response.data.success) {
           setStores(response.data.data);
           if (response.data.data.length > 0) {
-            setSelectedStore(response.data.data[0].position);
+            setSelectedStorePosition(response.data.data[0].position);
+            setSelectedStore(response.data.data[0]);
           }
         } else {
           console.error('Error fetching stores:', response.data.error);
@@ -35,7 +36,7 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
     };
 
     fetchStores();
-  }, []);
+  }, [setSelectedStore]);
 
   useEffect(() => {
     const fetchTrucks = async () => {
@@ -66,10 +67,10 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
   }, [isLoaded]);
 
   useEffect(() => {
-    if (isLoaded && currentPosition && selectedStore && map) {
+    if (isLoaded && currentPosition && selectedStorePosition && map) {
       const directionsService = new window.google.maps.DirectionsService();
 
-      // clear previous directions renderer if it exists
+      // Clear previous directions renderer if it exists
       if (directionsRendererRef.current) {
         directionsRendererRef.current.setMap(null);
         directionsRendererRef.current = null;
@@ -78,7 +79,7 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
       directionsService.route(
         {
           origin: currentPosition,
-          destination: selectedStore,
+          destination: selectedStorePosition,
           travelMode: window.google.maps.TravelMode.DRIVING
         },
         (result, status) => {
@@ -99,11 +100,12 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
         }
       );
     }
-  }, [isLoaded, currentPosition, selectedStore, map, setRoute, selectedTruck]);
+  }, [isLoaded, currentPosition, selectedStorePosition, map, setRoute, selectedTruck]);
 
   const handleStoreChange = (event) => {
     const selectedStore = stores.find(store => store.name === event.target.value);
-    setSelectedStore(selectedStore.position);
+    setSelectedStorePosition(selectedStore.position);
+    setSelectedStore(selectedStore);
     setSelectedTruck(null);
   };
 
@@ -127,12 +129,12 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck }) => {
       {isLoaded && (
         <GoogleMap
           mapContainerStyle={containerStyle}
-          center={currentPosition || selectedStore}
+          center={currentPosition || selectedStorePosition}
           zoom={10}
           onLoad={(map) => setMap(map)}
         >
           {currentPosition && <Marker position={currentPosition} label="You" />}
-          {selectedStore && <Marker position={selectedStore} label="Store" />}
+          {selectedStorePosition && <Marker position={selectedStorePosition} label="Store" />}
         </GoogleMap>
       )}
       <div>

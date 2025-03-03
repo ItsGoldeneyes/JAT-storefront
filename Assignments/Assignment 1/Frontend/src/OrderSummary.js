@@ -11,7 +11,8 @@ function OrderSummary() {
           origin, 
           destination, 
           distance, 
-          deliveryPrice 
+          deliveryPrice,
+          storeCode
         } = location.state;
 
   const [paymentInfo, setPaymentInfo] = useState({
@@ -25,6 +26,9 @@ function OrderSummary() {
   const [tripError, setTripError] = useState(null);
   const [tripSuccess, setTripSuccess] = useState(false);
   const [tripDetails, setTripDetails] = useState(null);
+  const [shoppingError, setShoppingError] = useState(null);
+  const [shoppingSuccess, setShoppingSuccess] = useState(false);
+  const [shoppingDetails, setShoppingDetails] = useState(null);
 
   const handlePaymentSubmit = async (event) => {
     event.preventDefault();
@@ -42,6 +46,11 @@ function OrderSummary() {
       distance: distance,
       truck_id: deliveryTruck, 
       price: deliveryPrice,
+    };
+
+    const shoppingData = {
+      store_code: storeCode,
+      total_price: totalPrice,
     };
 
     // try {
@@ -68,13 +77,15 @@ function OrderSummary() {
     // }
 
     try {
+      // create trip
       const tripResponse = await axios.post("http://localhost/Assignment1/create_trip.php", tripData);
       console.log("Trip response:", tripResponse.data);
+
       if (tripResponse.data.success) {
         setTripError(null);
         setTripSuccess(true);
 
-        console.log("Trip response:", tripResponse.data);
+        // fetch trip details
         const tripId = tripResponse.data.trip_id;
         console.log("Trip ID:", tripId);
 
@@ -86,16 +97,45 @@ function OrderSummary() {
         console.log("Trip details response:", tripDetailsResponse.data);
 
         if (tripDetailsResponse.data.success) {
-          setTripDetails(tripDetailsResponse.data.data); // Store trip details in state
+          setTripDetails(tripDetailsResponse.data.data);
         } else {
           console.error("Failed to fetch trip details:", tripDetailsResponse.data.error);
           setTripError("Failed to fetch trip details. Please try again.");
         }
+
+        // create shopping
+        const shoppingResponse = await axios.post("http://localhost/Assignment1/create_shopping.php", shoppingData);
+        console.log("Shopping response:", shoppingResponse.data);
+
+        if (shoppingResponse.data.success) {
+          setShoppingError(null);
+          setShoppingSuccess(true);
+
+          // fetch shopping details
+          const receiptId = shoppingResponse.data.receipt_id;
+          console.log("Receipt ID:", receiptId);
+
+          if (!receiptId) {
+            throw new Error("Receipt ID is undefined.");
+          }
+
+          const shoppingDetailsResponse = await axios.get(`http://localhost/Assignment1/get_shopping.php?receipt_id=${receiptId}`);
+          console.log("Shopping details response:", shoppingDetailsResponse.data);
+
+          if (shoppingDetailsResponse.data.success) {
+            setShoppingDetails(shoppingDetailsResponse.data.data);
+          } else {
+            console.error("Failed to fetch shopping details:", shoppingDetailsResponse.data.error);
+            setShoppingError("Failed to fetch shopping details. Please try again.");
+          }
+        } else {
+          setShoppingError(shoppingResponse.data.error || "Failed to create shopping record. Please try again.");
+        }
       } else {
-        setError(tripResponse.data.error || "Failed to create trip. Please try again.");
+        setTripError(tripResponse.data.error || "Failed to create trip. Please try again.");
       }
     } catch (error) {
-      console.error("Error creating trip:", error);
+      console.error("Error creating trip or shopping record:", error);
       setTripError("An error occurred while submitting the trip. Please try again.");
     }
   };
@@ -188,6 +228,21 @@ function OrderSummary() {
               <p><strong>Distance:</strong> {tripDetails.Distance} km</p>
               <p><strong>Truck ID:</strong> {tripDetails.Truck_Id}</p>
               <p><strong>Price:</strong> ${tripDetails.Price}</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {shoppingError && !shoppingSuccess && <p style={{ color: 'red' }}>{shoppingError}</p>}
+      {shoppingSuccess && (
+        <div>
+          <p style={{ color: 'green' }}>Shopping record created successfully!</p>
+          {shoppingDetails && (
+            <div>
+              <h2>Receipt</h2>
+              <p><strong>Receipt ID:</strong> {shoppingDetails.Receipt_Id}</p>
+              <p><strong>Store Code:</strong> {shoppingDetails.Store_Code}</p>
+              <p><strong>Total Price:</strong> ${shoppingDetails.Total_Price}</p>
             </div>
           )}
         </div>

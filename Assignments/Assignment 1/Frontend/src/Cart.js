@@ -13,6 +13,7 @@ function Cart() {
   const [route, setRoute] = useState(null);
   const [estimatedDeliveryTime, setEstimatedDeliveryTime] = useState(null);
   const [distance, setDistance] = useState(null);
+  const [selectedStore, setSelectedStore] = useState(null);
   const taxRate = 0.13;
 
   const navigate = useNavigate();
@@ -39,16 +40,16 @@ function Cart() {
       return total;
     }, 0);
 
-      const tax = totalItemPrice * taxRate;
-      const newTotalPrice = (totalItemPrice + tax + parseFloat(deliveryPrice)).toFixed(2);
-      setTotalPrice(newTotalPrice);
-    }, [cartItems, deliveryPrice]);
+    const tax = totalItemPrice * taxRate;
+    const newTotalPrice = (totalItemPrice + tax + parseFloat(deliveryPrice)).toFixed(2);
+    setTotalPrice(newTotalPrice);
+  }, [cartItems, deliveryPrice]);
 
   useEffect(() => {
     if (route) {
       const { distance, duration } = route;
 
-      const calculatedDeliveryPrice = (distance.value * 0.0005).toFixed(2); 
+      const calculatedDeliveryPrice = (distance.value * 0.0005).toFixed(2);
       setDeliveryPrice(calculatedDeliveryPrice);
 
       setDistance(distance.text);
@@ -96,8 +97,9 @@ function Cart() {
         deliveryTruck,
         origin,
         destination,
-        distance: parseFloat(distance),
-        deliveryPrice: parseFloat(deliveryPrice),
+        distance,
+        deliveryPrice,
+        storeCode: selectedStore?.store_code, 
       },
     });
   };
@@ -123,7 +125,7 @@ function Cart() {
             {cartItems.map((val, key) => (
               <tr key={key}>
                 <td>
-                <input
+                  <input
                     type="checkbox"
                     checked={val.selected}
                     onChange={() => toggleSelect(key)}
@@ -149,6 +151,7 @@ function Cart() {
         <GoogleMapsComponent 
           setRoute={setRoute}
           setDeliveryTruck={setDeliveryTruck}
+          setSelectedStore={setSelectedStore}
         />
       </div>
       <div>
