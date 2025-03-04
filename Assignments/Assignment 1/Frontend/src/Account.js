@@ -6,14 +6,14 @@ function Account() {
   const backend = 'http://localhost/Assignment1/'
 
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [email, setEmail] = useState('');
+  const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignIn = async () => {
     try {
-      console.log(`Attempting sign-in with email: ${email} and password: ${password}`);
+      console.log(`Attempting sign-in with login ID: ${loginId} and password: ${password}`);
       const response = await axios.post(backend+'signin', {
-        email: email,
+        login_id: loginId,
         password: password
       }, {
         headers: {
@@ -25,7 +25,7 @@ function Account() {
         setIsSignedIn(true);
         Cookies.set('access_token', response.data.token, { expires: 1 });
       } else {
-        alert('Invalid email or password');
+        alert('Invalid login ID or password');
       }
     } catch (error) {
       if (error.code === 'ERR_NETWORK') {
@@ -38,9 +38,9 @@ function Account() {
 
   const handleSignUp = async () => {
     try {
-      console.log(`Attempting sign-up with email: ${email} and password: ${password}`);
+      console.log(`Attempting sign-up with login ID: ${loginId} and password: ${password}`);
       const response = await axios.post(backend+'signup', {
-        email: email,
+        login_id: loginId,
         password: password
       }, {
         headers: {
@@ -67,9 +67,9 @@ function Account() {
     event.preventDefault();
     const name = event.target.name.value;
     try {
-      console.log(`Attempting to update user with email: ${email} and name: ${name}`);
+      console.log(`Attempting to update user with login ID: ${loginId} and name: ${name}`);
       const response = await axios.post(backend+'update_user', {
-        email: email,
+        login_id: loginId,
         name: name
       }, {
         headers: {
@@ -103,10 +103,10 @@ function Account() {
         <div>
           <h2>Sign In / Sign Up</h2>
           <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder="Login ID"
+            value={loginId}
+            onChange={(e) => setLoginId(e.target.value)}
           />
           <input
             type="password"
@@ -127,8 +127,8 @@ function Account() {
             </label>
             <br />
             <label>
-              Email:
-              <input type="email" name="email" />
+              Login ID:
+              <input type="text" name="login_id" />
             </label>
             <br />
             <button type="submit">Update</button>

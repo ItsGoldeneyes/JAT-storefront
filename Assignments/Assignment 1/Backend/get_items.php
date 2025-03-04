@@ -1,13 +1,12 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-
+include 'cors.php';
 include 'connect.php';
 
 $sql = "SELECT * FROM Item";
 $result = $conn->query($sql);
 
 if (!$result) {
+    error_log("Database error: " . $conn->error);
     http_response_code(500);
     echo json_encode(["success" => false, "error" => "Database error: " . $conn->error]);
     exit();

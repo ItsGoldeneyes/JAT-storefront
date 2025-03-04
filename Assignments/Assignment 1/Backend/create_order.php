@@ -1,11 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:3000"); // Allow requests from React app
-//header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
+include 'cors.php';
 include 'connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -21,21 +15,34 @@ if (!$data) {
     exit();
 }
 
+$date_issued = $data->date_issued ?? null;
+$date_received = $data->date_received ?? null;
 $total_price = $data->total_price ?? null;
-$delivery_truck = $data->delivery_truck ?? null;
-$starting_location = $data->starting_location ?? null;
-$destination = $data->destination ?? null;
+$payment_code = $data->payment_code ?? null;
+$user_id = $data->user_id ?? null;
+$trip_id = $data->trip_id ?? null;
+$receipt_id = $data->receipt_id ?? null;
 
-if (!$total_price || !$delivery_truck || !$starting_location || !$destination) {
-    echo json_encode(["error" => "Missing required fields."]);
+$missing_fields = [];
+
+if (!$date_issued) $missing_fields[] = 'date_issued';
+if (!$date_received) $missing_fields[] = 'date_received';
+if (!$total_price) $missing_fields[] = 'total_price';
+if (!$payment_code) $missing_fields[] = 'payment_code';
+if (!$user_id) $missing_fields[] = 'user_id';
+if (!$trip_id) $missing_fields[] = 'trip_id';
+if (!$receipt_id) $missing_fields[] = 'receipt_id';
+
+if (!empty($missing_fields)) {
+    echo json_encode(["error" => "Missing required fields: " . implode(', ', $missing_fields)]);
     exit();
 }
 
-$sql = "INSERT INTO order_test (total_price, delivery_truck, starting_location, destination)
-        VALUES (?, ?, ?, ?)";
+$sql = "INSERT INTO Orders (date_issued, date_received, total_price, payment_code, user_id, trip_id, receipt_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("dsss", $total_price, $delivery_truck, $starting_location, $destination);
+$stmt->bind_param("ssdsiii", $date_issued, $date_received, $total_price, $payment_code, $user_id, $trip_id, $receipt_id);
 
 if ($stmt->execute()) {
     echo json_encode(["success" => true, "message" => "Order created successfully."]);

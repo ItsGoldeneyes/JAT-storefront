@@ -1,7 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-
+include 'cors.php';
 include 'connect.php';
 
 // Fetch data from the Truck table

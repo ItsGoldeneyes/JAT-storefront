@@ -33,12 +33,10 @@ function OrderSummary() {
   const handlePaymentSubmit = async (event) => {
     event.preventDefault();
 
-    const orderData = {
-      total_price: totalPrice,
-      delivery_truck: deliveryTruck,
-      starting_location: origin,
-      destination: destination,
-    };
+    if (!deliveryTruck) {
+      setTripError("Truck ID is missing. Please select a delivery truck.");
+      return;
+    }
 
     const tripData = {
       source_code: origin,
@@ -52,29 +50,6 @@ function OrderSummary() {
       store_code: storeCode,
       total_price: totalPrice,
     };
-
-    // try {
-    //   const response = await axios.post("http://localhost/Assignment1/create_order.php", orderData);
-    //   console.log("Order response:", response.data);
-
-    //   console.log("full response:", response);
-    //   console.log("response.data:", response.data);
-
-    //   if (response.data.success) {
-    //     setError(null);
-    //     setSuccess(true);
-    
-    //     // redirect to a success page
-    //     setTimeout(() => {
-    //       navigate('/'); // redirect to homepage
-    //     }, 3000);
-    //   } else {
-    //     setError(response.data.error || "Failed to create order. Please try again.");
-    //   }
-    // } catch (error) {
-    //   console.error("Error creating order:", error);
-    //   setError("An error occurred while submitting the order. Please try again.");
-    // }
 
     try {
       // create trip
@@ -124,6 +99,35 @@ function OrderSummary() {
 
           if (shoppingDetailsResponse.data.success) {
             setShoppingDetails(shoppingDetailsResponse.data.data);
+
+            // create order after receiving trip and shopping details
+            const orderData = {
+              total_price: totalPrice,
+              delivery_truck: deliveryTruck,
+              starting_location: origin,
+              destination: destination,
+              date_issued: new Date().toISOString().split('T')[0], // current date
+              payment_code: paymentInfo.cardNumber, 
+              user_id: '1', // Hardcoded, user is not working
+              trip_id: tripId,
+              receipt_id: receiptId,
+              date_received: 'null' // not received yet
+            };
+
+            const orderResponse = await axios.post("http://localhost/Assignment1/create_order.php", orderData);
+            console.log("Order response:", orderResponse.data);
+
+            if (orderResponse.data.success) {
+              setError(null);
+              setSuccess(true);
+          
+              // redirect to a success page
+              setTimeout(() => {
+                navigate('/'); // redirect to homepage
+              }, 3000);
+            } else {
+              setError(orderResponse.data.error || "Failed to create order. Please try again.");
+            }
           } else {
             console.error("Failed to fetch shopping details:", shoppingDetailsResponse.data.error);
             setShoppingError("Failed to fetch shopping details. Please try again.");
@@ -203,8 +207,6 @@ function OrderSummary() {
 
       <h1>Invoice</h1>
 
-      {/* {error && !success && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>Order submitted successfully! Redirecting...</p>} */}
       {tripError && !tripSuccess && <p style={{ color: 'red' }}>{tripError}</p>}
       {tripSuccess && (
         <div>

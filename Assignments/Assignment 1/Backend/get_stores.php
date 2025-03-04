@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+include 'cors.php';
 header("Content-Type: application/json; charset=UTF-8");
 
 include 'connect.php';

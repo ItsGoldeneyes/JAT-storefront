@@ -1,11 +1,6 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:3000"); // Allow requests from React app
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
+include 'cors.php';
 include 'connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -27,9 +22,33 @@ $distance = $data->distance ?? null;
 $truckId = $data->truck_id ?? null;
 $price = $data->price ?? null;
 
-if (!$sourceCode || !$destinationCode || !$distance || !$truckId || !$price) {
+if (!$sourceCode) {
     http_response_code(400);
-    echo json_encode(["success" => false, "error" => "Missing required fields."]);
+    echo json_encode(["success" => false, "error" => "Missing source code."]);
+    exit();
+}
+
+if (!$destinationCode) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "error" => "Missing destination code."]);
+    exit();
+}
+
+if (!$distance) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "error" => "Missing distance."]);
+    exit();
+}
+
+if (!$truckId) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "error" => "Missing truck ID."]);
+    exit();
+}
+
+if (!$price) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "error" => "Missing price."]);
     exit();
 }
 

@@ -38,8 +38,10 @@ CREATE TABLE Shopping (
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
+    login_id VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    city_code VARCHAR(50),
+    balance DECIMAL(10, 2)
 );
 
 CREATE TABLE account_details (
@@ -52,10 +54,30 @@ CREATE TABLE account_details (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE TABLE Orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    date_issued DATE NOT NULL,
+    date_received DATE NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
+    payment_code VARCHAR(50) NOT NULL,
+    user_id INT NOT NULL,
+    trip_id INT NOT NULL,
+    receipt_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (trip_id) REFERENCES Trip(Trip_Id),
+    FOREIGN KEY (receipt_id) REFERENCES Shopping(Receipt_Id)
+);
+
 INSERT INTO Truck (Truck_Code, Availability_Code) VALUES
-('TRUCK-001', 'AVAILABLE'),
-('TRUCK-002', 'UNAVAILABLE'),
-('TRUCK-003', 'AVAILABLE');
+('TRUCK1', 'AVAILABLE'),
+('TRUCK2', 'UNAVAILABLE'),
+('TRUCK3', 'AVAILABLE');
+
+INSERT INTO Trip (Source_Code, Destination_Code, Distance, Truck_Id, Price) VALUES
+('SRC1', 'DEST1', 100.00, 1, 50.00),
+('SRC2', 'DEST2', 200.00, 2, 100.00),
+('SRC3', 'DEST3', 300.00, 3, 150.00),
+('SRC4', 'DEST4', 400.00, 1, 200.00);
 
 INSERT INTO Item (Item_name, Price, Made_in, Department_Code, Image_Path) VALUES
 ('Samsung Galaxy S25 Ultra 512GB Titanium Silverwhite', 2098.99, 'South Korea', 'ELECTRONICS', 'assets/samsung_galaxy_ultra.png'),
@@ -64,5 +86,27 @@ INSERT INTO Item (Item_name, Price, Made_in, Department_Code, Image_Path) VALUES
 ('Samsung Galaxy S25 256GB Icyblue', 1288.99, 'South Korea', 'ELECTRONICS', 'assets/samsung_galaxy.png');
 
 INSERT INTO Store (name, store_code, latitude, longitude) VALUES
-('Store 1', 'STORE-001', 43.65808062, -79.38138663),
-('Store 2', 'STORE-002', 44.00000000, -80.00000000);
+('Store 1', 'STORE1', 43.65808062, -79.38138663),
+('Store 2', 'STORE2', 44.00000000, -80.00000000);
+
+INSERT INTO users (login_id, password, city_code, balance) VALUES
+('adam', 'password123', 'TOR', 100.00),
+('jess', 'password123', 'TOR', 200.00),
+('thao', 'password123', 'TOR', 300.00);
+
+INSERT INTO Shopping (Store_Code, Total_Price) VALUES
+('STORE1', 150.00),
+('STORE2', 200.00),
+('STORE1', 250.00),
+('STORE2', 300.00);
+
+INSERT INTO account_details (user_id, name, telephone, address, email) VALUES
+(1, 'Adam', '1234567890', '123 Main St', 'adam@torontomu.ca'),
+(2, 'Jess', '0987654321', '456 Elm St', 'jess@torontomu.ca'),
+(3, 'Thao', '1122334455', '789 Oak St', 'thao@torontomu.ca');
+
+INSERT INTO Orders (date_issued, date_received, total_price, payment_code, user_id, trip_id, receipt_id) VALUES
+('2024-01-01', '2024-01-05', 150.00, 'PAY1', 1, 1, 1),
+('2024-02-01', '2024-02-05', 200.00, 'PAY2', 2, 2, 2),
+('2024-03-01', '2024-03-05', 250.00, 'PAY3', 3, 3, 3),
+('2024-04-01', '2024-04-05', 300.00, 'PAY4', 1, 4, 4);

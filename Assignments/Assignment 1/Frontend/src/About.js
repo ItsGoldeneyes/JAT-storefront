@@ -15,9 +15,9 @@ function About() {
         </div>
 
         <div>
-          <img src="" alt="Adam " />
+          <img src="assets/adam.jpg" alt="Adam Cameron" />
           <p>Adam </p>
-          <p>E-mail: </p>
+          <p>E-mail: adam.cameron@torontomu.ca</p>
         </div>
 
         <div>

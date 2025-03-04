@@ -1,21 +1,24 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-
+include 'cors.php';
 include 'connect.php';
 
-// Fetch data from the database
-$sql = "SELECT * FROM order_test";
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+$sql = "SELECT * FROM Orders";
 $result = $conn->query($sql);
 
 $orders = [];
 if ($result->num_rows > 0) {
-  while ($row = $result->fetch_assoc()) {
-    $orders[] = $row;
-  }
+    while ($row = $result->fetch_assoc()) {
+        $orders[] = $row;
+    }
+    echo json_encode(["success" => true, "orders" => $orders]);
+} else {
+    echo json_encode(["success" => false, "message" => "No orders found."]);
 }
-
-echo json_encode($orders);
 
 $conn->close();
 ?>

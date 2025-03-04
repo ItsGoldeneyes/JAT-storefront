@@ -9,6 +9,7 @@ import Cart from './Cart';
 import Home from './Home';
 import Navbar from './Navbar';
 import OrderSummary from './OrderSummary';
+import Orders from './Orders';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -24,6 +25,7 @@ root.render(
         <Route path="/signup" element={<SignUp />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/order-summary" element={<OrderSummary />} />
+        <Route path="/orders" element={<Orders />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
