@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
 import About from './About';
 import Account from './Account';
-import SignUp from './SignUp';
 import Cart from './Cart';
 import Home from './Home';
 import Navbar from './Navbar';
@@ -22,7 +21,6 @@ root.render(
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/account" element={<Account />} />
-        <Route path="/signup" element={<SignUp />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/order-summary" element={<OrderSummary />} />
         <Route path="/orders" element={<Orders />} />
