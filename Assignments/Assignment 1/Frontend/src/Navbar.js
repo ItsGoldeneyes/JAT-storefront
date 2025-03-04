@@ -13,8 +13,8 @@ function Navbar() {
             <li><Link to="/account">Account</Link></li>
             <li><Link to="/cart">Shopping Cart</Link></li>
             <li><Link to="/cart">Types of Services</Link></li>
-                <li><Link to="/orders">Orders</Link></li>
-                <li><Link to="http://localhost/phpmyadmin/index.php?route=/database/structure&db=jat">DB Admin</Link></li>
+            <li><Link to="/orders">Orders</Link></li>
+            <li><Link to="/dbmaintain">DB Maintain</Link></li>
         </ul>
     </nav>
   );

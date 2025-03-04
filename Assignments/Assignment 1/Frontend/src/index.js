@@ -9,6 +9,7 @@ import Home from './Home';
 import Navbar from './Navbar';
 import OrderSummary from './OrderSummary';
 import Orders from './Orders';
+import DBMaintain from './DBMaintain';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -24,6 +25,7 @@ root.render(
         <Route path="/cart" element={<Cart />} />
         <Route path="/order-summary" element={<OrderSummary />} />
         <Route path="/orders" element={<Orders />} />
+        <Route path="/dbmaintain" element={<DBMaintain />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

@@ -14,7 +14,13 @@ function Home() {
       try {
         const response = await axios.get('http://localhost/Assignment1/get_items.php');
         if (response.data.success) {
-          setItems(response.data.data);
+          let sortedItems = response.data.data;
+          if (selectedValue === "lowest-price") {
+            sortedItems = sortedItems.sort((a, b) => a.Price - b.Price);
+          } else if (selectedValue === "highest-price") {
+            sortedItems = sortedItems.sort((a, b) => b.Price - a.Price);
+          }
+          setItems(sortedItems);
         } else {
           console.error('Error fetching items:', response.data.error);
         }
@@ -24,7 +30,7 @@ function Home() {
     };
 
     fetchItems();
-  }, []);
+  }, [selectedValue]);
 
   useEffect(() => {
     const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
@@ -79,12 +85,8 @@ function Home() {
       <div>
       <label htmlFor="dropdown">Sort by:</label>
       <select id="dropdown" value={selectedValue} onChange={selectedDropdownOption}>
-        <option value="best-match">Best Match</option>
         <option value="lowest-price">Lowest Price</option>
         <option value="highest-price">Highest Price</option>
-        <option value="best-selling">Best Selling</option>
-        <option value="best-rating">Best Rating</option>
-        <option value="most-reviews">Most Reviews</option>
       </select>
     </div>
 
