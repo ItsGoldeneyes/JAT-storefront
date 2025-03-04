@@ -12,7 +12,7 @@ function Account() {
   const handleSignIn = async () => {
     try {
       console.log(`Attempting sign-in with login ID: ${loginId} and password: ${password}`);
-      const response = await axios.post(backend+'signin', {
+      const response = await axios.post(backend+'signin.php', {
         login_id: loginId,
         password: password
       }, {
@@ -39,7 +39,7 @@ function Account() {
   const handleSignUp = async () => {
     try {
       console.log(`Attempting sign-up with login ID: ${loginId} and password: ${password}`);
-      const response = await axios.post(backend+'signup', {
+      const response = await axios.post(backend+'signup.php', {
         login_id: loginId,
         password: password
       }, {
