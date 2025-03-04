@@ -12,9 +12,14 @@ function Account() {
   const handleSignIn = async () => {
     try {
       console.log(`Attempting sign-in with email: ${email} and password: ${password}`);
-      const response = await axios.post(backend+'/signin', {
+      const response = await axios.post(backend+'signin', {
         email: email,
         password: password
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Cookies.get('access_token')}`
+        }
       });
       if (response.data.success) {
         setIsSignedIn(true);
@@ -34,9 +39,14 @@ function Account() {
   const handleSignUp = async () => {
     try {
       console.log(`Attempting sign-up with email: ${email} and password: ${password}`);
-      const response = await axios.post(backend+'/signup', {
+      const response = await axios.post(backend+'signup', {
         email: email,
         password: password
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Cookies.get('access_token')}`
+        }
       });
       if (response.data.success) {
         setIsSignedIn(true);
@@ -58,11 +68,12 @@ function Account() {
     const name = event.target.name.value;
     try {
       console.log(`Attempting to update user with email: ${email} and name: ${name}`);
-      const response = await axios.post(backend+'/update_user', {
+      const response = await axios.post(backend+'update_user', {
         email: email,
         name: name
       }, {
         headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${Cookies.get('access_token')}`
         }
       });

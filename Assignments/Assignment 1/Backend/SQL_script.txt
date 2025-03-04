@@ -4,26 +4,6 @@ CREATE TABLE Truck (
     Availability_Code VARCHAR(50) NOT NULL
 );
 
-INSERT INTO Truck (Truck_Code, Availability_Code) VALUES
-('TRUCK-001', 'AVAILABLE'),
-('TRUCK-002', 'UNAVAILABLE'),
-('TRUCK-003', 'AVAILABLE');
-
-CREATE TABLE Item (
-    Item_Id INT AUTO_INCREMENT PRIMARY KEY,
-    Item_name VARCHAR(255) NOT NULL,
-    Price DECIMAL(10, 2) NOT NULL,
-    Made_in VARCHAR(100),
-    Department_Code VARCHAR(50),
-    Image_Path VARCHAR(255)  -- New field for the image path
-);
-
-INSERT INTO Item (Item_name, Price, Made_in, Department_Code, Image_Path) VALUES
-('Samsung Galaxy S25 Ultra 512GB Titanium Silverwhite', 2098.99, 'South Korea', 'ELECTRONICS', 'assets/samsung_galaxy_ultra.png'),
-('Apple iPhone 16 Pro Max 256GB Black Titanium', 1749.99, 'USA', 'ELECTRONICS', 'assets/iphone16.png'),
-('Apple iPhone 15 128GB Pink', 999.99, 'USA', 'ELECTRONICS', 'assets/iphone15.png'),
-('Samsung Galaxy S25 256GB Icyblue', 1288.99, 'South Korea', 'ELECTRONICS', 'assets/samsung_galaxy.png');
-
 CREATE TABLE Trip (
     Trip_Id INT AUTO_INCREMENT PRIMARY KEY,
     Source_Code VARCHAR(50) NOT NULL,
@@ -41,12 +21,48 @@ CREATE TABLE Store (
     longitude DECIMAL(11, 8) NOT NULL
 );
 
-INSERT INTO Store (name, store_code, latitude, longitude) VALUES
-('Store 1', 'STORE-001', 43.65808062, -79.38138663),
-('Store 2', 'STORE-002', 44.00000000, -80.00000000);
+CREATE TABLE Item (
+    Item_Id INT AUTO_INCREMENT PRIMARY KEY,
+    Item_name VARCHAR(255) NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+    Made_in VARCHAR(100),
+    Department_Code VARCHAR(50),
+    Image_Path VARCHAR(255)  -- New field for the image path
+);
 
 CREATE TABLE Shopping (
     Receipt_Id INT AUTO_INCREMENT PRIMARY KEY,
     Store_Code VARCHAR(50) NOT NULL,
     Total_Price DECIMAL(10, 2) NOT NULL
 );
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE account_details (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    telephone VARCHAR(20),
+    address TEXT,
+    email VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+INSERT INTO Truck (Truck_Code, Availability_Code) VALUES
+('TRUCK-001', 'AVAILABLE'),
+('TRUCK-002', 'UNAVAILABLE'),
+('TRUCK-003', 'AVAILABLE');
+
+INSERT INTO Item (Item_name, Price, Made_in, Department_Code, Image_Path) VALUES
+('Samsung Galaxy S25 Ultra 512GB Titanium Silverwhite', 2098.99, 'South Korea', 'ELECTRONICS', 'assets/samsung_galaxy_ultra.png'),
+('Apple iPhone 16 Pro Max 256GB Black Titanium', 1749.99, 'USA', 'ELECTRONICS', 'assets/iphone16.png'),
+('Apple iPhone 15 128GB Pink', 999.99, 'USA', 'ELECTRONICS', 'assets/iphone15.png'),
+('Samsung Galaxy S25 256GB Icyblue', 1288.99, 'South Korea', 'ELECTRONICS', 'assets/samsung_galaxy.png');
+
+INSERT INTO Store (name, store_code, latitude, longitude) VALUES
+('Store 1', 'STORE-001', 43.65808062, -79.38138663),
+('Store 2', 'STORE-002', 44.00000000, -80.00000000);

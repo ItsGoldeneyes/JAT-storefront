@@ -11,9 +11,9 @@ function Navbar() {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/about">About Us</Link></li>
             <li><Link to="/account">Account</Link></li>
-            <li><Link to="/account">Reviews</Link></li>
             <li><Link to="/cart">Shopping Cart</Link></li>
             <li><Link to="/cart">Types of Services</Link></li>
+            <li><Link to="/orders">Orders</Link></li>
         </ul>
     </nav>
   );
