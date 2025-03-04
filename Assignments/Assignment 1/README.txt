@@ -1,8 +1,8 @@
 Instructions to run code:
 
 1. Unzip Assignment 1 folder
-2. Copy and paste Assignment 1/Backend folder into XAMPP htdocs
-3. Rename copied folder from step 2 "Assignment1"
+2. Copy and paste "Backend" folder into XAMPP htdocs
+3. Rename copied "Backend" folder from step 2 "Assignment1"
 4. Run Apache Web Server and MySQL Database from XAMPP
 5. Open a browser and go to localhost
 6. Go to phpMyAdmin and create a new database called "JAT"
