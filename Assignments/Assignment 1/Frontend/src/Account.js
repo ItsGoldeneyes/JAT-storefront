@@ -68,7 +68,7 @@ function Account() {
     const name = event.target.name.value;
     try {
       console.log(`Attempting to update user with login ID: ${loginId} and name: ${name}`);
-      const response = await axios.post(backend+'update_user', {
+      const response = await axios.post(backend+'update_user.php', {
         login_id: loginId,
         name: name
       }, {
