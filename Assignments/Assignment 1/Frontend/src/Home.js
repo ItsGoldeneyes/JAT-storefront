@@ -81,7 +81,6 @@ function Home() {
   return (
     <div>
       <h1>Welcome to JAT</h1>
-      {/* Add more store content here */}
       <div>
       <label htmlFor="dropdown">Sort by:</label>
       <select id="dropdown" value={selectedValue} onChange={selectedDropdownOption}>
