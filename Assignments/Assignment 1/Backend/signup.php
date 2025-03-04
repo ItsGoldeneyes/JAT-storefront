@@ -17,17 +17,17 @@ if (!$data) {
     exit();
 }
 
-$email = $data->email ?? null;
+$login_id = $data->login_id ?? null;
 $password = $data->password ?? null;
 
-if (!$email || !$password) {
+if (!$login_id || !$password) {
     echo json_encode(["error" => "Missing required fields."]);
     exit();
 }
 
-$sql = "INSERT INTO users (email, password) VALUES (?, ?)";
+$sql = "INSERT INTO users (login_id, password) VALUES (?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ss", $email, $password);
+$stmt->bind_param("ss", $login_id, $password);
 
 if ($stmt->execute()) {
     echo json_encode(["success" => true, "message" => "User registered successfully."]);
