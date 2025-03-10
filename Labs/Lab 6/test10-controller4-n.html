@@ -1,0 +1,28 @@
+<!doctype html>
+<html ng-app>
+<head>
+    <title>AngularJS MVC Architecture</title>
+    <script src="https://code.angularjs.org/1.5.0/angular.min.js"></script>
+    <script type="text/javascript">
+        function fullName($scope){
+            $scope.Student = {
+                'FName': 'John',
+                'LName': 'Smith',
+            }
+        }
+    </script>
+</head>
+<body>
+    <div ng-controller="fullName">
+        <p>{{Student.FName}}</p>
+    </div>
+</body>
+</html>
+
+<!--
+----------------------------------
+Output:
+
+    John
+
+-->
