@@ -1,0 +1,54 @@
+{
+    "countries": [
+        {
+            "name": "Belgium",
+            "population": 11443876,
+            "capital": "Brussels"
+        },
+        {
+            "name": "Belarus",
+            "population": 22277766,
+            "capital": "Minsk"
+        },
+        {
+            "name": "Serbia",
+            "population": 7543987,
+            "capital": "Belgrade"
+        },
+        {
+            "name": "France",
+            "population": 10000000,
+            "capital": "Paris"
+        },
+        {
+            "name": "Germany",
+            "population": 20000000,
+            "capital": "Berlin"
+        },
+        {
+            "name": "Italy",
+            "population": 2830183,
+            "capital": "Rome"
+        },
+        {
+            "name": "Spain",
+            "population": 123123123,
+            "capital": "Madrid"
+        },
+        {
+            "name": "Netherlands",
+            "population": 532423,
+            "capital": "Amsterdam"
+        },
+        {
+            "name": "Poland",
+            "population": 4444444,
+            "capital": "Warsaw"
+        },
+        {
+            "name": "Portugal",
+            "population": 2323245,
+            "capital": "Lisbon"
+        }
+    ]
+}
