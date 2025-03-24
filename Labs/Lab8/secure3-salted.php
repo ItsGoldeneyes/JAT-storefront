@@ -45,10 +45,10 @@ function insertUser($username, $password) {
     if ($smt) {
         $smt->bind_param("sss", $username, $saltedMd5Password, $salt);
         $smt->execute();
-        echo "User inserted successfully!";
+        echo "User '$username' inserted successfully!<br>";
         $smt->close();
     } else {
-        echo "Error: " . $conn->error;
+        echo "Error: " . $conn->error . "<br>";
     }
 }
 
@@ -148,16 +148,16 @@ function generateRandomSalt() {
 
 insertUser("Smith", "password1");
 if (validateUser("Smith", "password1")) {
-  echo "Login successful!";
+  echo "Login successful!<br>";
 } else {
-  echo "Invalid username or password.";
+  echo "Invalid username or password.<br>";
 }
 
 insertUser("David", "password2");
 if (validateUser("David", "password2")) {
-  echo "Login successful!";
+  echo "Login successful!<br>";
 } else {
-  echo "Invalid username or password.";
+  echo "Invalid username or password.<br>";
 }
 
 $conn->close();
