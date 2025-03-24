@@ -37,13 +37,13 @@ if ($tableResult->num_rows == 0) {
 function insertUser($username, $password) {
     global $conn;
 
-    $md5_password = custom_md5($password);
+    $md5Password = custom_md5($password);
 
     $sql = "INSERT INTO Users (Username, Password) VALUES (?, ?)";
     $smt = $conn->prepare($sql);
 
     if ($smt) {
-        $smt->bind_param("ss", $username, $md5_password);
+        $smt->bind_param("ss", $username, $md5Password);
         $smt->execute();
         echo "User inserted successfully!";
         $smt->close();
@@ -55,13 +55,13 @@ function insertUser($username, $password) {
 function validateUser($username, $password) {
     global $conn;
 
-    $md5_password = custom_md5($password);
+    $md5Password = custom_md5($password);
 
     $sql = "SELECT UserID FROM Users WHERE Username=? AND Password=?";
     $smt = $conn->prepare($sql);
 
     if ($smt) {
-        $smt->bind_param("ss", $username, $md5_password);
+        $smt->bind_param("ss", $username, $md5Password);
         $smt->execute();
         $smt->store_result();
 
