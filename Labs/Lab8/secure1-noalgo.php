@@ -4,7 +4,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "lab8";
+$dbname = "lab8a";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -14,12 +14,10 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Check if the 'Users' table exists, and create it if not
 $tableCheckSQL = "SHOW TABLES LIKE 'Users'";
 $tableResult = $conn->query($tableCheckSQL);
 
 if ($tableResult->num_rows == 0) {
-    // Create the Users table if it doesn't exist
     $createTableSQL = "CREATE TABLE Users (
         UserID INT AUTO_INCREMENT PRIMARY KEY,
         Username VARCHAR(255) NOT NULL,
@@ -38,7 +36,6 @@ if ($tableResult->num_rows == 0) {
 function insertUser($username, $password) {
     global $conn;
 
-    // Prepare statement
     $sql = "INSERT INTO Users (Username, Password) VALUES (?, ?)";
     $smt = $conn->prepare($sql);
 
@@ -52,11 +49,9 @@ function insertUser($username, $password) {
     }
 }
 
-// Check if the credentials match a user in the system
 function validateUser($username, $password) {
     global $conn;
 
-    // Prepare statement
     $sql = "SELECT UserID FROM Users WHERE Username=? AND Password=?";
     $smt = $conn->prepare($sql);
 
