@@ -19,22 +19,53 @@ if (!$data) {
 
 $login_id = $data->login_id ?? null;
 $password = $data->password ?? null;
+$name = $data->name ?? null;
+$telephone = $data->telephone ?? null;
+$address = $data->address ?? null;
+$city = $data->city ?? null;
+$email = $data->email ?? null;
 
 if (!$login_id || !$password) {
     echo json_encode(["error" => "Missing required fields."]);
     exit();
 }
 
-$sql = "INSERT INTO users (login_id, password) VALUES (?, ?)";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("ss", $login_id, $password);
+// $city_code = null;
+// $cityQuery = "SELECT city_code FROM cities WHERE city_name = ?";
+// $stmt = $conn->prepare($cityQuery);
+// $stmt->bind_param("s", $city);
+// $stmt->execute();
+// $stmt->bind_result($city_code);
+// $stmt->fetch();
+// $stmt->close();
+
+// if (!$city_code) {
+//     echo json_encode(["error" => "Invalid city."]);
+//     exit();
+// }
+
+$sqlUser = "INSERT INTO users (login_id, password, city_code) VALUES (?, ?, ?)";
+$stmt = $conn->prepare($sqlUser);
+$stmt->bind_param("ssi", $login_id, $password, $city_code);
 
 if ($stmt->execute()) {
-    echo json_encode(["success" => true, "message" => "User registered successfully."]);
+    $user_id = $stmt->insert_id;
+    $stmt->close();
+
+    $sqlDetails = "INSERT INTO account_details (user_id, name, telephone, address, email) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sqlDetails);
+    $stmt->bind_param("issss", $user_id, $name, $telephone, $address, $email);
+
+    if ($stmt->execute()) {
+        echo json_encode(["success" => true, "message" => "User registered successfully."]);
+    } else {
+        echo json_encode(["success" => false, "error" => "Error inserting account details."]);
+    }
+
+    $stmt->close();
 } else {
-    echo json_encode(["success" => false, "message" => "Error registering user."]);
+    echo json_encode(["success" => false, "error" => "Error registering user."]);
 }
 
-$stmt->close();
 $conn->close();
 ?>

@@ -12,26 +12,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
+session_start();
+if (!isset($_SESSION['login_id'])) {
+    echo json_encode(["success" => false, "error" => "User not authenticated."]);
+    exit();
+}
+
+$login_id = $_SESSION['login_id'];
 $data = json_decode(file_get_contents("php://input"));
 
-if (!$data) {
-    echo json_encode(["success" => false, "error" => "Invalid JSON data."]);
+$updateFields = [];
+$updateValues = [];
+
+if (!empty($data->name)) {
+    $updateFields[] = "name = ?";
+    $updateValues[] = $data->name;
+}
+if (!empty($data->telephone)) {
+    $updateFields[] = "telephone = ?";
+    $updateValues[] = $data->telephone;
+}
+if (!empty($data->address)) {
+    $updateFields[] = "address = ?";
+    $updateValues[] = $data->address;
+}
+// if (!empty($data->city)) {
+//     $city_code = getCityCode($data->city); // Convert city name to code
+//     $updateFields[] = "city_code = ?";
+//     $updateValues[] = $city_code;
+// }
+if (!empty($data->email)) {
+    // $checkEmailSQL = "SELECT user_id FROM account_details WHERE email = ? AND user_id != (SELECT user_id FROM users WHERE login_id = ?)";
+    // $checkStmt = $conn->prepare($checkEmailSQL);
+    // $checkStmt->bind_param("ss", $data->email, $login_id);
+    // $checkStmt->execute();
+    // $checkStmt->store_result();
+    
+    // if ($checkStmt->num_rows > 0) {
+    //     echo json_encode(["success" => false, "error" => "Email is already in use."]);
+    //     $checkStmt->close();
+    //     exit();
+    // }
+    // $checkStmt->close();
+
+    $updateFields[] = "email = ?";
+    $updateValues[] = $data->email;
+}
+
+if (empty($updateFields)) {
+    echo json_encode(["success" => false, "error" => "No fields to update."]);
     exit();
 }
 
-$email = $data->email ?? null;
-$name = $data->name ?? null;
-$telephone = $data->telephone ?? null;
-$address = $data->address ?? null;
+$sql = "UPDATE account_details SET " . implode(", ", $updateFields) . " WHERE user_id = (SELECT user_id FROM users WHERE login_id = ?)";
 
-if (!$email || !$name || !$telephone || !$address) {
-    echo json_encode(["error" => "Missing required fields."]);
-    exit();
-}
-
-$sql = "UPDATE account_details SET name = ?, telephone = ?, address = ? WHERE email = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ssss", $name, $telephone, $address, $email);
+
+$paramTypes = str_repeat("s", count($updateValues)) . "s";
+$updateValues[] = $login_id;
+$stmt->bind_param($paramTypes, ...$updateValues);
 
 if ($stmt->execute()) {
     echo json_encode(["success" => true, "message" => "User details updated successfully."]);
@@ -41,4 +80,14 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $conn->close();
+
+// function getCityCode($city) {
+//     $cityMapping = [
+//         "New York" => 101,
+//         "Los Angeles" => 102,
+//         "Chicago" => 103,
+//         "Houston" => 104
+//     ];
+//     return $cityMapping[$city] ?? null;
+// }
 ?>

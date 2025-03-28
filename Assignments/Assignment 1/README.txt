@@ -7,5 +7,6 @@ Instructions to run code:
 5. Open a browser and go to localhost
 6. Go to phpMyAdmin and create a new database called "JAT"
 7. Open the Assignment 1 folder in VS Code 
-8. In VS Code terminal run command "npm install" then "npm run dev" (if you don't have node.js, you need to install it)
-9. Your browser should open the web app, otherwise open a browser and go to localhost:3000
+8. In terminal, cd to Assignments/Assignment 1/Frontend
+9. In VS Code terminal run command "npm install" then "npm run dev" (if you don't have node.js, you need to install it)
+10. Your browser should open the web app, otherwise open a browser and go to localhost:3000
