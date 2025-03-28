@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     login_id VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    salt VARCHAR(255) NOT NULL, 
     city_code VARCHAR(50),
     balance DECIMAL(10, 2)
 );
@@ -89,10 +90,10 @@ INSERT INTO Store (name, store_code, latitude, longitude) VALUES
 ('Store 1', 'STORE1', 43.65808062, -79.38138663),
 ('Store 2', 'STORE2', 44.00000000, -80.00000000);
 
-INSERT INTO users (login_id, password, city_code, balance) VALUES
-('adam', 'password123', 'TOR', 100.00),
-('jess', 'password123', 'TOR', 200.00),
-('thao', 'password123', 'TOR', 300.00);
+INSERT INTO users (login_id, password, salt, city_code, balance) VALUES
+('adam', 'dae0ef3e2f4fa5571612cda611925d1c', 'n0AZuWvT8ZXuZ43o', 'TOR', 100.00),
+('jess', '2dfb2c44e4ced138cc361f353994629d', 'PubMpPZl/tnYkDcA', 'TOR', 200.00),
+('thao', '980dbad5dd8867d03037a172fc745c00', 'u0OPDXjh28Jjd6BI', 'TOR', 300.00);
 
 INSERT INTO Shopping (Store_Code, Total_Price) VALUES
 ('STORE1', 150.00),

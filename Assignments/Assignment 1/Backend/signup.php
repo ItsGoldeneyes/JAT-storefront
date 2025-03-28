@@ -44,9 +44,16 @@ if (!$login_id || !$password) {
 //     exit();
 // }
 
-$sqlUser = "INSERT INTO users (login_id, password, city_code) VALUES (?, ?, ?)";
+// Generate a random salt (use a secure method to generate salt in production)
+$salt = base64_encode(random_bytes(12));  // 16 bytes = 32 characters of salt
+
+// Hash the password with the salt using MD5
+$hashed_password = md5($salt . $password);  // MD5 hashing (consider stronger hashing for production)
+
+// Store salt and hashed password in the database
+$sqlUser = "INSERT INTO users (login_id, password, salt) VALUES (?, ?, ?)";
 $stmt = $conn->prepare($sqlUser);
-$stmt->bind_param("ssi", $login_id, $password, $city_code);
+$stmt->bind_param("sss", $login_id, $hashed_password, $salt); // Bind salt and hashed password
 
 if ($stmt->execute()) {
     $user_id = $stmt->insert_id;
