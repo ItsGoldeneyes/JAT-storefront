@@ -111,7 +111,7 @@ function OrderSummary() {
               user_id: '1', // Hardcoded, user is not working
               trip_id: tripId,
               receipt_id: receiptId,
-              date_received: 'null' // not received yet
+              date_received: '01-01-01' // not received yet
             };
 
             const orderResponse = await axios.post("http://localhost/Assignment1/create_order.php", orderData);
