@@ -14,6 +14,7 @@ function Cart() {
   const [estimatedDeliveryTime, setEstimatedDeliveryTime] = useState(null);
   const [distance, setDistance] = useState(null);
   const [selectedStore, setSelectedStore] = useState(null);
+  const [shippingType, setShippingType] = useState('regular');
   const taxRate = 0.13;
 
   const navigate = useNavigate();
@@ -48,21 +49,30 @@ function Cart() {
   useEffect(() => {
     if (route) {
       const { distance, duration } = route;
+      let calculatedDeliveryPrice = (distance.value * 0.0005).toFixed(2);
+      
+      if (shippingType === 'express') {
+        calculatedDeliveryPrice *= 1.5;
+      }
 
-      const calculatedDeliveryPrice = (distance.value * 0.0005).toFixed(2);
       setDeliveryPrice(calculatedDeliveryPrice);
 
       setDistance(distance.text);
 
       const currentDate = new Date();
       let estimatedDeliveryDate = new Date(currentDate.getTime() + duration.value * 1000);
-      estimatedDeliveryDate = new Date(estimatedDeliveryDate.getTime() + 24 * 60 * 60 * 1000); // adding 24 hours
+      if (shippingType === 'express') {
+        estimatedDeliveryDate = new Date(estimatedDeliveryDate.getTime() - 12 * 60 * 60 * 1000); // 12 hours)
+      } else {
+        estimatedDeliveryDate = new Date(estimatedDeliveryDate.getTime() + 24 * 60 * 60 * 1000); // 24 hours
+      }
+      
       setEstimatedDeliveryTime(estimatedDeliveryDate);
 
       setDestination(route.end_address);
       setOrigin(route.start_address);
     }
-  }, [route]);
+  }, [route, shippingType]);
 
   const toggleSelect = (index) => {
     const updatedCart = [...cartItems];
@@ -99,7 +109,8 @@ function Cart() {
         destination,
         distance,
         deliveryPrice,
-        storeCode: selectedStore?.store_code, 
+        storeCode: selectedStore?.store_code,
+        shippingType,
       },
     });
   };
@@ -192,6 +203,15 @@ function Cart() {
         <h3>Destination:</h3>
         {destination && <p>{destination}</p>}
       </div>
+
+      <div>
+        <h3>Shipping Method:</h3>
+        <select value={shippingType} onChange={(e) => setShippingType(e.target.value)}>
+          <option value="regular">Regular Shipping</option>
+          <option value="express">Express Shipping</option>
+        </select>
+      </div>
+
       <button onClick={handleConfirmOrder}>Confirm Order</button>
     </div>
   );
