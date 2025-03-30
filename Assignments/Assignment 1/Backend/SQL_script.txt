@@ -1,3 +1,13 @@
+DROP TABLE IF EXISTS access_tokens;
+DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS account_details;
+DROP TABLE IF EXISTS Shopping;
+DROP TABLE IF EXISTS Item;
+DROP TABLE IF EXISTS Trip;
+DROP TABLE IF EXISTS Store;
+DROP TABLE IF EXISTS Truck;
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE IF NOT EXISTS Truck (
     Truck_Id INT AUTO_INCREMENT PRIMARY KEY,
     Truck_Code VARCHAR(50) NOT NULL,
@@ -41,6 +51,7 @@ CREATE TABLE IF NOT EXISTS users (
     login_id VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     salt VARCHAR(255) NOT NULL, 
+    access_level VARCHAR(50) DEFAULT 'user',
     city_code VARCHAR(50),
     balance DECIMAL(10, 2)
 );
@@ -69,6 +80,16 @@ CREATE TABLE IF NOT EXISTS Orders (
     FOREIGN KEY (receipt_id) REFERENCES Shopping(Receipt_Id)
 );
 
+CREATE TABLE IF NOT EXISTS access_tokens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
 INSERT INTO Truck (Truck_Code, Availability_Code) VALUES
 ('TRUCK1', 'AVAILABLE'),
 ('TRUCK2', 'UNAVAILABLE'),
@@ -90,10 +111,11 @@ INSERT INTO Store (name, store_code, latitude, longitude) VALUES
 ('Store 1', 'STORE1', 43.65808062, -79.38138663),
 ('Store 2', 'STORE2', 44.00000000, -80.00000000);
 
-INSERT INTO users (login_id, password, salt, city_code, balance) VALUES
-('adam', 'dae0ef3e2f4fa5571612cda611925d1c', 'n0AZuWvT8ZXuZ43o', 'TOR', 100.00),
-('jess', '2dfb2c44e4ced138cc361f353994629d', 'PubMpPZl/tnYkDcA', 'TOR', 200.00),
-('thao', '980dbad5dd8867d03037a172fc745c00', 'u0OPDXjh28Jjd6BI', 'TOR', 300.00);
+INSERT INTO users (login_id, password, salt, access_level, city_code, balance) VALUES
+('adam!', '64982384ef663ff4888c30bfaa9926d3', '1y26cx2tumkQu253', 'admin', 'TOR', 100.00),
+('adamnotadmin', '64982384ef663ff4888c30bfaa9926d3', '1y26cx2tumkQu253', 'user', 'TOR', 100.00),
+('jess', '2dfb2c44e4ced138cc361f353994629d', 'PubMpPZl/tnYkDcA', 'admin', 'TOR', 200.00),
+('thao', '980dbad5dd8867d03037a172fc745c00', 'u0OPDXjh28Jjd6BI', 'admin', 'TOR', 300.00);
 
 INSERT INTO Shopping (Store_Code, Total_Price) VALUES
 ('STORE1', 150.00),

@@ -42,8 +42,16 @@ if ($result->num_rows > 0) {
     
     // Check if the hashed password matches the stored hash
     if ($hashed_password === $user['password']) {
-        $token = $user['id'] . '_' . time();
-        echo json_encode(["success" => true, "token" => $token]);
+        $access_token = $user['id'] . '_' . time();
+
+        // Insert the token into the access_tokens table
+        $insert_token = "INSERT INTO access_tokens (user_id, token, expires_at, created_at) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 1 DAY), NOW())";
+        $insert = $conn->prepare($insert_token);
+        $insert->bind_param("is", $user['id'], $access_token);
+        $insert->execute();
+        $insert->close();
+
+        echo json_encode(["success" => true, "access_token" => $access_token]);
     } else {
         error_log("Invalid password for login_id: $login_id");
         echo json_encode(["success" => false, "message" => "Invalid login_id or password."]);
