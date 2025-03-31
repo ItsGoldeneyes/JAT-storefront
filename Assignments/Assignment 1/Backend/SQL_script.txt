@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS account_details (
 CREATE TABLE IF NOT EXISTS Orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     date_issued DATE NOT NULL,
-    date_received DATE NOT NULL,
+    date_received DATE,
     total_price DECIMAL(10, 2) NOT NULL,
     payment_code VARCHAR(50) NOT NULL,
     user_id INT NOT NULL,

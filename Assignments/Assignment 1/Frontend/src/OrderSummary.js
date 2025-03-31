@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 function OrderSummary() {
   const location = useLocation();
@@ -21,6 +22,12 @@ function OrderSummary() {
     cvv: '',
   });
 
+  const [paymentMethod, setPaymentMethod] = useState('creditCard'); // Default to credit card
+
+  const handlePaymentMethodChange = (event) => {
+    setPaymentMethod(event.target.value);
+  };
+
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [tripError, setTripError] = useState(null);
@@ -29,6 +36,35 @@ function OrderSummary() {
   const [shoppingError, setShoppingError] = useState(null);
   const [shoppingSuccess, setShoppingSuccess] = useState(false);
   const [shoppingDetails, setShoppingDetails] = useState(null);
+
+  const getUserId = async () => {
+    const token = Cookies.get('access_token');
+    if (!token) {
+      throw new Error("Access token is missing. Please log in.");
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost/Assignment1/access_token_check.php",
+        {},
+        {
+          headers: {
+            'Authorization': `${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (response.data.success) {
+        return response.data.user_id;
+      } else {
+        throw new Error("Invalid access token. Please log in.");
+      }
+    } catch (error) {
+      console.error("Error verifying access token:", error);
+      throw new Error("Failed to verify access token. Please log in.");
+    }
+  };
 
   const handlePaymentSubmit = async (event) => {
     event.preventDefault();
@@ -100,6 +136,8 @@ function OrderSummary() {
           if (shoppingDetailsResponse.data.success) {
             setShoppingDetails(shoppingDetailsResponse.data.data);
 
+            const userId = await getUserId();
+
             // create order after receiving trip and shopping details
             const orderData = {
               total_price: totalPrice,
@@ -107,11 +145,11 @@ function OrderSummary() {
               starting_location: origin,
               destination: destination,
               date_issued: new Date().toISOString().split('T')[0], // current date
-              payment_code: paymentInfo.cardNumber, 
-              user_id: '1', // Hardcoded, user is not working
+              payment_code: paymentMethod === 'payAtDoor' ? 'Pay at Door' : paymentInfo.cardNumber, 
+              user_id: userId,
               trip_id: tripId,
               receipt_id: receiptId,
-              date_received: '01-01-01' // not received yet
+              date_received: null // package not received yet
             };
 
             const orderResponse = await axios.post("http://localhost/Assignment1/create_order.php", orderData);
@@ -172,36 +210,61 @@ function OrderSummary() {
       <form onSubmit={handlePaymentSubmit}>
         <h2>Payment Information</h2>
         <div>
-          <label htmlFor="cardNumber">Card Number:</label>
-          <input
-            type="text"
-            id="cardNumber"
-            value={paymentInfo.cardNumber}
-            onChange={handleInputChange}
+          <label htmlFor="paymentMethod">Payment Method:</label>
+          <select
+            id="paymentMethod"
+            value={paymentMethod}
+            onChange={handlePaymentMethodChange}
             required
-          />
+          >
+            <option value="creditCard">Credit Card</option>
+            <option value="debitCard">Debit Card</option>
+            <option value="payAtDoor">Pay at Door</option>
+          </select>
         </div>
-        <div>
-          <label htmlFor="expiryDate">Expiry Date:</label>
-          <input
-            type="text"
-            id="expiryDate"
-            placeholder="MM/YY"
-            value={paymentInfo.expiryDate}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="cvv">CVV:</label>
-          <input
-            type="text"
-            id="cvv"
-            value={paymentInfo.cvv}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+
+        {paymentMethod !== 'payAtDoor' && (
+          <>
+            <div>
+              <label htmlFor="cardNumber">Card Number:</label>
+              <input
+                type="text"
+                id="cardNumber"
+                value={paymentInfo.cardNumber}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="expiryDate">Expiry Date:</label>
+              <input
+                type="text"
+                id="expiryDate"
+                placeholder="MM/YY"
+                value={paymentInfo.expiryDate}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="cvv">CVV:</label>
+              <input
+                type="text"
+                id="cvv"
+                value={paymentInfo.cvv}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+          </>
+        )}
+
+        {paymentMethod === 'payAtDoor' && (
+          <p style={{ color: 'blue' }}>
+            Please have your payment ready at the door.
+          </p>
+        )}
+
         <button type="submit">Submit Payment</button>
       </form>
 
