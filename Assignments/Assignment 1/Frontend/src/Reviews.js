@@ -9,6 +9,7 @@ function Reviews() {
   const [newReview, setNewReview] = useState('');
   const [rating, setRating] = useState(1);
   const [userId, setUserId] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -34,6 +35,7 @@ function Reviews() {
         });
         if (response.data.success) {
           setUserId(response.data.user_id);
+          setIsAdmin(response.data.access_level === 'admin');
         } else {
           setError('Failed to verify access token.');
         }
@@ -53,8 +55,12 @@ function Reviews() {
   const fetchReviews = async (itemId) => {
     try {
       const response = await axios.post("http://localhost/Assignment1/get_reviews.php", {
-        item_id: itemId
+        item_id: itemId,
+        user_id: userId,
+        access_level: isAdmin ? 'admin' : 'user',
+        
       });
+      console.log("Fetched reviews:", response.data);
       setReviews(response.data.reviews || []);
     } catch (error) {
       console.error("Error fetching reviews:", error);
