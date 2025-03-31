@@ -159,7 +159,17 @@ function OrderSummary() {
               setError(null);
               setSuccess(true);
           
-              
+              const existingItems = JSON.parse(localStorage.getItem("purchasedItems")) || [];
+
+              const updatedItems = [...existingItems, ...cartItems].reduce((acc, item) => {
+                if (!acc.some(existingItem => existingItem.Item_Id === item.Item_Id)) {
+                  acc.push(item);
+                }
+                return acc;
+              }, []);
+
+              localStorage.setItem("purchasedItems", JSON.stringify(updatedItems));
+
               setTimeout(() => {
                 navigate('/orders'); 
               }, 3000);
