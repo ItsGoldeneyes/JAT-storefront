@@ -3,7 +3,21 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 include 'cors.php';
-include 'connect.php';
+// include 'connect.php';
+// Issues with duplicating table creation with this script, so running connect code separately
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "JAT";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
