@@ -1,36 +1,86 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import './orders.css';
 
 function Orders() {
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [userId, setUserId] = useState(null);
+
+  const backend = 'http://localhost/Assignment1/';
+
+  const verifyAccessToken = async () => {
+    const token = Cookies.get('access_token');
+    if (token) {
+      try {
+        const response = await axios.post(
+          backend + 'access_token_check.php',
+          {},
+          {
+            headers: {
+              'Authorization': `${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        if (response.data.success) {
+          setUserId(response.data.user_id); // Store the user's ID
+          setIsAdmin(response.data.access_level === 'admin');
+        } else {
+          setError('Failed to verify access token.');
+        }
+      } catch (error) {
+        console.error('Error verifying access token:', error);
+        setError('Error verifying access token.');
+      }
+    }
+  };
+
+  useEffect(() => {
+    verifyAccessToken();
+  }, []);
 
   useEffect(() => {
     const fetchOrders = async () => {
-      try {
-        const response = await axios.get('http://localhost/Assignment1/get_orders.php');
-        console.log('Response:', response);
-        if (response.data.success) {
-          console.log('Orders:', response.data.orders);
-          setOrders(response.data.orders);
-        } else {
-          setError(response.data.message);
+      if (userId !== null) {
+        try {
+          const response = await axios.post(
+            backend + 'get_orders.php',
+            {
+              user_id: userId,
+              access_level: isAdmin ? 'admin' : 'user',
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          if (response.data.success) {
+            setOrders(response.data.orders);
+          } else {
+            setError(response.data.message);
+          }
+        } catch (error) {
+          console.error('Error fetching orders:', error);
+          setError('Error fetching orders. Please try again.');
         }
-      } catch (error) {
-        console.error('Error:', error);
-        setError('Error fetching orders. Please try again.');
       }
     };
 
     fetchOrders();
-  }, []);
+  }, [userId, isAdmin]);
 
-  const filteredOrders = orders.filter(order =>
-    order.order_id.toString().includes(searchTerm) || 
-    order.user_id.toString().includes(searchTerm)
-  );
+  // Filter orders based on the search term
+  const filteredOrders = orders.filter((order) => {
+    return (
+      order.order_id.toString().includes(searchTerm) ||
+      order.user_id.toString().includes(searchTerm)
+    );
+  });
 
   return (
     <div>

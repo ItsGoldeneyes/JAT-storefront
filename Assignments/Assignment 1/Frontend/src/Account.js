@@ -14,15 +14,6 @@ function Account() {
   const [city, setCity] = useState('');
   const [email, setEmail] = useState('');
 
-  useEffect(() => {
-    const token = Cookies.get('access_token');
-    if (token) {
-      console.log('Access Token:', token);
-    } else {
-      console.log('No access token found.');
-    }
-  }, []);
-
   // Check if user is logged in with access token cookie
   useEffect(() => {
     const verifyToken = async () => {
@@ -95,6 +86,7 @@ function Account() {
         setIsSignedIn(true);
         Cookies.set('access_token', response.data.access_token, { expires: 1 });
         console.log('Cookie Data:', Cookies.get());
+        fetchAccountDetails(response.data.access_token);
       } else {
         alert('Invalid login ID or password');
       }
@@ -126,6 +118,7 @@ function Account() {
       if (response.data.success) {
         setIsSignedIn(true);
         Cookies.set('access_token', response.data.token, { expires: 1 });
+        fetchAccountDetails(response.data.token);
       } else {
         alert(response.data.message);
       }
