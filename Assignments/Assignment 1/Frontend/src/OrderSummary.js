@@ -138,14 +138,19 @@ function OrderSummary() {
 
             const userId = await getUserId();
 
+            // Extract item IDs from cartItems
+            const itemIds = cartItems.map(item => item.Item_Id);
+
             // create order after receiving trip and shopping details
             const orderData = {
               total_price: totalPrice,
               delivery_truck: deliveryTruck,
               starting_location: origin,
               destination: destination,
-              date_issued: new Date().toISOString().split('T')[0], // current date
+              date_issued: new Date().toISOString().split('T')[0], // current date as string
               payment_code: paymentMethod === 'payAtDoor' ? 'Pay at Door' : paymentInfo.cardNumber, 
+              payment_type: paymentMethod, 
+              item_ids: itemIds, 
               user_id: userId,
               trip_id: tripId,
               receipt_id: receiptId,
@@ -199,6 +204,10 @@ function OrderSummary() {
       [id]: value,
     }));
   };
+
+  // useEffect(() => {
+  //   console.log("Payment Info Updated:", paymentInfo);
+  // }, [paymentInfo]);
 
   useEffect(() => {
     console.log("Success state changed:", success);

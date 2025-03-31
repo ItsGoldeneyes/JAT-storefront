@@ -105,7 +105,8 @@ function Orders() {
               <th>Date Issued</th>
               <th>Date Received</th>
               <th>Total Price</th>
-              <th>Payment Code</th>
+              <th>Item IDs</th>
+              <th>Payment Type</th>
             </tr>
           </thead>
           <tbody>
@@ -118,7 +119,8 @@ function Orders() {
                 <td>{order.date_issued}</td>
                 <td>{order.date_received}</td>
                 <td>{order.total_price}</td>
-                <td>{order.payment_code}</td>
+                <td>{order.item_ids}</td>
+                <td>{order.payment_type}</td>
               </tr>
             ))}
           </tbody>

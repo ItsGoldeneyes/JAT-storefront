@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS Item (
     Price DECIMAL(10, 2) NOT NULL,
     Made_in VARCHAR(100),
     Department_Code VARCHAR(50),
-    Image_Path VARCHAR(255)  -- New field for the image path
+    Image_Path VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS Shopping (
@@ -72,7 +72,10 @@ CREATE TABLE IF NOT EXISTS Orders (
     date_issued DATE NOT NULL,
     date_received DATE,
     total_price DECIMAL(10, 2) NOT NULL,
-    payment_code VARCHAR(50) NOT NULL,
+    payment_type VARCHAR(50) NOT NULL,
+    payment_code VARCHAR(50),
+    salt VARCHAR(255),
+    item_ids VARCHAR(255) NOT NULL,
     user_id INT NOT NULL,
     trip_id INT NOT NULL,
     receipt_id INT NOT NULL,
@@ -138,11 +141,11 @@ INSERT INTO account_details (user_id, name, telephone, address, email) VALUES
 (2, 'Jess', '0987654321', '456 Elm St', 'jess@torontomu.ca'),
 (3, 'Thao', '1122334455', '789 Oak St', 'thao@torontomu.ca');
 
-INSERT INTO Orders (date_issued, date_received, total_price, payment_code, user_id, trip_id, receipt_id) VALUES
-('2024-01-01', '2024-01-05', 150.00, 'PAY1', 1, 1, 1),
-('2024-02-01', '2024-02-05', 200.00, 'PAY2', 2, 2, 2),
-('2024-03-01', '2024-03-05', 250.00, 'PAY3', 3, 3, 3),
-('2024-04-01', '2024-04-05', 300.00, 'PAY4', 1, 4, 4);
+INSERT INTO Orders (date_issued, date_received, total_price, payment_type, payment_code, salt, item_ids, user_id, trip_id, receipt_id) VALUES
+('2024-01-01', '', 150.00, 'creditCard', '089127398127', 'salt', '1, 2, 3', 1, 1, 1),
+('2024-02-01', '', 200.00, 'payAtDoor', '', '', '1, 2, 3', 2, 2, 2),
+('2024-03-01', '', 250.00, 'debitCard', '12304972309743', 'salt', '1, 2, 3', 3, 3, 3),
+('2024-04-01', '', 300.00, 'debitCard', '2398472893', 'salt', '1, 2, 3', 1, 4, 4);
 
 INSERT INTO reviews (user_id, item_id, review, ranking_num) VALUES
 (1, 1, 'Great! Works perfectly.', 5),
