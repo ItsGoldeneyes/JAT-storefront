@@ -106,9 +106,6 @@ function Orders() {
               <th>Date Received</th>
               <th>Total Price</th>
               <th>Payment Code</th>
-              <th>Delivery Truck</th>
-              <th>Starting Location</th>
-              <th>Destination</th>
             </tr>
           </thead>
           <tbody>
@@ -122,9 +119,6 @@ function Orders() {
                 <td>{order.date_received}</td>
                 <td>{order.total_price}</td>
                 <td>{order.payment_code}</td>
-                <td>{order.delivery_truck}</td>
-                <td>{order.starting_location}</td>
-                <td>{order.destination}</td>
               </tr>
             ))}
           </tbody>

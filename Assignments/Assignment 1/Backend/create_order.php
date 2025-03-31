@@ -26,7 +26,6 @@ $receipt_id = $data->receipt_id ?? null;
 $missing_fields = [];
 
 if (!$date_issued) $missing_fields[] = 'date_issued';
-if (!$date_received) $missing_fields[] = 'date_received';
 if (!$total_price) $missing_fields[] = 'total_price';
 if (!$payment_code) $missing_fields[] = 'payment_code';
 if (!$user_id) $missing_fields[] = 'user_id';

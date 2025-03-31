@@ -61,7 +61,8 @@ function Navbar() {
                 <li><Link to="/account">Account</Link></li>
                 {isLoggedIn && <li><Link to="/cart">Shopping Cart</Link></li>}
                 {isLoggedIn && <li><Link to="/orders">Orders</Link></li>}
-                {isLoggedIn && <li><Link to="/dbmaintain">Reviews</Link></li>}
+                {isLoggedIn && <li><Link to="/reviews">Reviews</Link></li>}
+                {isAdmin && <li><Link to="/dbmaintain">DBMaintain</Link></li>}
                 {isAdmin && <li><Link to="http://localhost/phpmyadmin/index.php?route=/database/structure&db=jat">DB Maintain</Link></li>}
             </ul>
         </nav>

@@ -159,10 +159,10 @@ function OrderSummary() {
               setError(null);
               setSuccess(true);
           
-              // redirect to a success page
-              // setTimeout(() => {
-              //   navigate('/'); // redirect to homepage
-              // }, 3000);
+              
+              setTimeout(() => {
+                navigate('/orders'); 
+              }, 3000);
             } else {
               setError(orderResponse.data.error || "Failed to create order. Please try again.");
             }
