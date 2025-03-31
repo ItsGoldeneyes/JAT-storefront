@@ -8,18 +8,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 $data = json_decode(file_get_contents('php://input'), true);
+$item_id = isset($data['item_id']) ? $data['item_id'] : null;
 $user_id = isset($data['user_id']) ? $data['user_id'] : null;
-$review_text = isset($data['review_text']) ? $data['review_text'] : null;
-$rating = isset($data['rating']) ? $data['rating'] : null;
+$review = isset($data['review']) ? $data['review'] : null;
+$ranking_num = isset($data['ranking_num']) ? $data['ranking_num'] : null;
 
-if (!$user_id || !$review_text || !$rating) {
+if (!$item_id || !$user_id || !$review || !$ranking_num) {
     echo json_encode(["success" => false, "message" => "Missing required fields."]);
     exit();
 }
 
-$sql = "INSERT INTO reviews (user_id, review_text, rating) VALUES (?, ?, ?)";
+$sql = "INSERT INTO reviews (item_id, user_id, review, ranking_num) VALUES (?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ssi", $user_id, $review_text, $rating);
+$stmt->bind_param("iiss", $item_id, $user_id, $review, $ranking_num);
 
 if ($stmt->execute()) {
     echo json_encode(["success" => true, "message" => "Review submitted successfully."]);
