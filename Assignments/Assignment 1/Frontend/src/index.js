@@ -10,6 +10,7 @@ import Navbar from './Navbar';
 import OrderSummary from './OrderSummary';
 import Orders from './Orders';
 import DBMaintain from './DBMaintain';
+import Reviews from './Reviews';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -25,6 +26,7 @@ root.render(
         <Route path="/cart" element={<Cart />} />
         <Route path="/order-summary" element={<OrderSummary />} />
         <Route path="/orders" element={<Orders />} />
+        <Route path="/reviews" element={<Reviews />} />
         <Route path="/dbmaintain" element={<DBMaintain />} />
       </Routes>
     </BrowserRouter>
