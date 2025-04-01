@@ -145,6 +145,7 @@ function Account() {
     setAddress("");
     setCity("");
     setEmail("");
+    localStorage.removeItem('cartItems');
   };
 
   const handleUpdateAccount = async () => {
