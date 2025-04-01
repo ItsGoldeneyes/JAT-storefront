@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS Orders (
     date_received DATE,
     total_price DECIMAL(10, 2) NOT NULL,
     payment_type VARCHAR(50) NOT NULL,
-    payment_code VARCHAR(50),
+    payment_code VARCHAR(255),
     salt VARCHAR(255),
     item_ids VARCHAR(255) NOT NULL,
     user_id INT NOT NULL,
