@@ -30,29 +30,15 @@ if (!$login_id || !$password) {
     exit();
 }
 
-// $city_code = null;
-// $cityQuery = "SELECT city_code FROM cities WHERE city_name = ?";
-// $stmt = $conn->prepare($cityQuery);
-// $stmt->bind_param("s", $city);
-// $stmt->execute();
-// $stmt->bind_result($city_code);
-// $stmt->fetch();
-// $stmt->close();
-
-// if (!$city_code) {
-//     echo json_encode(["error" => "Invalid city."]);
-//     exit();
-// }
-
 // Generate a random salt
 $salt = base64_encode(random_bytes(12));
 
 $hashed_password = md5($salt . $password);
 
 // Store salt and hashed password in the database
-$sqlUser = "INSERT INTO users (login_id, password, salt) VALUES (?, ?, ?)";
+$sqlUser = "INSERT INTO users (login_id, password, salt, city_code) VALUES (?, ?, ?, ?)";
 $stmt = $conn->prepare($sqlUser);
-$stmt->bind_param("sss", $login_id, $hashed_password, $salt);
+$stmt->bind_param("ssss", $login_id, $hashed_password, $salt, $city);
 
 if ($stmt->execute()) {
     $user_id = $stmt->insert_id;
