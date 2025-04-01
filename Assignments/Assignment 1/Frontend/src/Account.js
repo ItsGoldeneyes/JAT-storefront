@@ -121,6 +121,7 @@ function Account() {
         setIsSignedIn(true);
         Cookies.set('access_token', response.data.token, { expires: 1 });
         fetchAccountDetails(Cookies.get('access_token'));
+        handleSignIn();
         window.location.reload();
       } else {
         alert(response.data.message);
