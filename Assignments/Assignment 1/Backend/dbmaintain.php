@@ -28,11 +28,25 @@ if ($action == 'getTables') {
     }
     echo json_encode($data);
 } elseif ($action == 'execute' && !empty($query)) {
+    $response = [];
     if ($conn->query($query) === TRUE) {
-        echo json_encode("Query executed successfully");
+        $response['message'] = "Query executed successfully";
     } else {
-        echo json_encode("Error: " . $conn->error);
+        $response['message'] = "Error: " . $conn->error;
     }
+
+    $updatedTable = [];
+    if (!empty($table)) {
+        $sql = "SELECT * FROM $table";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $updatedTable[] = $row;
+            }
+        }
+    }
+    $response['updatedTable'] = $updatedTable;
+    echo json_encode($response);
 }
 
 $conn->close();

@@ -88,6 +88,7 @@ function Account() {
         Cookies.set('access_token', response.data.access_token, { expires: 1 });
         console.log('Cookie Data:', Cookies.get());
         fetchAccountDetails(Cookies.get('access_token'));
+        window.location.reload();
       } else {
         alert('Invalid login ID or password');
       }
@@ -120,6 +121,7 @@ function Account() {
         setIsSignedIn(true);
         Cookies.set('access_token', response.data.token, { expires: 1 });
         fetchAccountDetails(Cookies.get('access_token'));
+        window.location.reload();
       } else {
         alert(response.data.message);
       }

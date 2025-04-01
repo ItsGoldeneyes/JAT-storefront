@@ -75,12 +75,36 @@ function DBMaintain() {
     };
 
     const handleExecute = () => {
-        // Execute the query
         axios.post('http://localhost/Assignment1/dbmaintain.php', {
             action: 'execute',
-            query: query
+            query: query,
+            table: selectedTable
         })
-        .then(response => setResult(response.data))
+        .then(response => {
+            if (response.data.updatedTable) {
+                const tableData = response.data.updatedTable;
+                if (Array.isArray(tableData) && tableData.length > 0) {
+                    let tableHtml = "<table border='1'><tr>";
+                    Object.keys(tableData[0]).forEach(key => {
+                        tableHtml += `<th>${key}</th>`;
+                    });
+                    tableHtml += "</tr>";
+                    tableData.forEach(row => {
+                        tableHtml += "<tr>";
+                        Object.values(row).forEach(value => {
+                            tableHtml += `<td>${value}</td>`;
+                        });
+                        tableHtml += "</tr>";
+                    });
+                    tableHtml += "</table>";
+                    setResult(tableHtml);
+                } else {
+                    setResult("0 results");
+                }
+            } else {
+                setResult(response.data.updatedTable || "No data returned");
+            }
+        })
         .catch(error => console.error('Error executing query:', error));
     };
 
