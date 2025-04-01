@@ -142,11 +142,11 @@ INSERT INTO account_details (user_id, name, telephone, address, email) VALUES
 (3, 'Jess', '0987654321', '456 Elm St', 'jess@torontomu.ca'),
 (4, 'Thao', '1122334455', '789 Oak St', 'thao@torontomu.ca');
 
-INSERT INTO Orders (date_issued, date_received, total_price, payment_type, payment_code, salt, item_ids, user_id, trip_id, receipt_id) VALUES
-('2024-01-01', '', 150.00, 'creditCard', '089127398127', 'salt', '1, 2, 3', 1, 1, 1),
-('2024-02-01', '', 200.00, 'payAtDoor', '', '', '1, 2, 3', 2, 2, 2),
-('2024-03-01', '', 250.00, 'debitCard', '12304972309743', 'salt', '1, 2, 3', 3, 3, 3),
-('2024-04-01', '', 300.00, 'debitCard', '2398472893', 'salt', '1, 2, 3', 1, 4, 4);
+INSERT INTO Orders (date_issued, total_price, payment_type, payment_code, salt, item_ids, user_id, trip_id, receipt_id) VALUES
+('2024-01-01', 150.00, 'creditCard', '089127398127', 'salt', '1, 2, 3', 1, 1, 1),
+('2024-02-01', 200.00, 'payAtDoor', '', '', '1, 2, 3', 2, 2, 2),
+('2024-03-01', 250.00, 'debitCard', '12304972309743', 'salt', '1, 2, 3', 3, 3, 3),
+('2024-04-01', 300.00, 'debitCard', '2398472893', 'salt', '1, 2, 3', 1, 4, 4);
 
 INSERT INTO reviews (user_id, item_id, review, ranking_num) VALUES
 (1, 1, 'Great! Works perfectly.', 5),
