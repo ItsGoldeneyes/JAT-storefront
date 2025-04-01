@@ -137,9 +137,10 @@ INSERT INTO Shopping (Store_Code, Total_Price) VALUES
 ('STORE2', 300.00);
 
 INSERT INTO account_details (user_id, name, telephone, address, email) VALUES
-(1, 'Adam', '1234567890', '123 Main St', 'adam@torontomu.ca'),
-(2, 'Jess', '0987654321', '456 Elm St', 'jess@torontomu.ca'),
-(3, 'Thao', '1122334455', '789 Oak St', 'thao@torontomu.ca');
+(1, 'Adam', '0987654321', '321 Main St', 'adamadmin@torontomu.ca'),
+(2, 'Adam', '1234567890', '123 Main St', 'adam@torontomu.ca'),
+(3, 'Jess', '0987654321', '456 Elm St', 'jess@torontomu.ca'),
+(4, 'Thao', '1122334455', '789 Oak St', 'thao@torontomu.ca');
 
 INSERT INTO Orders (date_issued, date_received, total_price, payment_type, payment_code, salt, item_ids, user_id, trip_id, receipt_id) VALUES
 ('2024-01-01', '', 150.00, 'creditCard', '089127398127', 'salt', '1, 2, 3', 1, 1, 1),

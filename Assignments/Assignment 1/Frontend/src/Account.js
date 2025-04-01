@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import './Account.css';
 
 function Account() {
   const backend = 'http://localhost/Assignment1/';
@@ -86,8 +87,7 @@ function Account() {
         setIsSignedIn(true);
         Cookies.set('access_token', response.data.access_token, { expires: 1 });
         console.log('Cookie Data:', Cookies.get());
-        window.location.reload();
-        // fetchAccountDetails(response.data.access_token);
+        fetchAccountDetails(Cookies.get('access_token'));
       } else {
         alert('Invalid login ID or password');
       }
@@ -119,8 +119,7 @@ function Account() {
       if (response.data.success) {
         setIsSignedIn(true);
         Cookies.set('access_token', response.data.token, { expires: 1 });
-        window.location.reload();
-        // fetchAccountDetails(response.data.token);
+        fetchAccountDetails(Cookies.get('access_token'));
       } else {
         alert(response.data.message);
       }
@@ -136,6 +135,13 @@ function Account() {
   const handleSignOut = () => {
     setIsSignedIn(false);
     Cookies.remove('access_token');
+    setLoginId("");
+    setPassword("");
+    setName("");
+    setTelephone("");
+    setAddress("");
+    setCity("");
+    setEmail("");
   };
 
   const handleUpdateAccount = async () => {
