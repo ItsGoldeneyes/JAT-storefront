@@ -50,6 +50,8 @@ if ($payment_type === 'payAtDoor') {
     $encoded_payment_code = md5($salt . $payment_code);
 }
 
+error_log("md5: " . print_r($encoded_payment_code, true));
+
 // Convert item_ids array to a comma-separated string
 $item_ids_string = implode(',', $item_ids);
 
@@ -58,7 +60,7 @@ $sql = "INSERT INTO Orders (date_issued, date_received, total_price, payment_typ
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ssdsississ", $date_issued, $date_received, $total_price, $payment_type, $encoded_payment_code, $salt, $user_id, $trip_id, $receipt_id, $item_ids_string);
+$stmt->bind_param("ssdssssiss", $date_issued, $date_received, $total_price, $payment_type, $encoded_payment_code, $salt, $user_id, $trip_id, $receipt_id, $item_ids_string);
 
 if ($stmt->execute()) {
     echo json_encode(["success" => true, "message" => "Order created successfully."]);
