@@ -1,0 +1,95 @@
+.reviews-page {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .reviews-page h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .reviews-page h2 {
+    font-size: 1.25rem;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .reviews-page ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+  }
+  
+  .reviews-page li {
+    margin-bottom: 10px;
+  }
+  
+  .reviews-page li button {
+    background-color: #007bff;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .reviews-page li button:hover {
+    background-color: #e0e8f0;
+  }
+  
+  .reviews-page textarea {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    resize: vertical;
+  }
+  
+  .reviews-page button {
+    margin: 10px;
+    padding: 10px 14px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .reviews-page button:hover {
+    background-color: #005dc5;
+  }
+  
+  .rating-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  
+  .rating-buttons button {
+    padding: 6px 10px;
+    background-color: #007bff;
+    border: 1px solid #ccc;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+  
+  .rating-buttons button.selected {
+    background-color: #ffc107;
+    border-color: #ffa000;
+  }
+  
+  .review-entry {
+    padding: 10px;
+    background-color: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }

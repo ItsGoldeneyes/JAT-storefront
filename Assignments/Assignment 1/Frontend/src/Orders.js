@@ -84,9 +84,9 @@ function Orders() {
   });
 
   return (
-    <div>
+    <div className="orders-page">
       <h1>Orders</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
       <div className="search-container">
         <input
           type="text"

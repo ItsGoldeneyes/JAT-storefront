@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import './OrderSummary.css';
 
 function OrderSummary() {
   const location = useLocation();
@@ -177,9 +178,9 @@ function OrderSummary() {
 
               localStorage.setItem("purchasedItems", JSON.stringify(updatedItems));
 
-              setTimeout(() => {
-                navigate('/orders'); 
-              }, 3000);
+              // setTimeout(() => {
+              //   navigate('/orders'); 
+              // }, 3000);
             } else {
               setError(orderResponse.data.error || "Failed to create order. Please try again.");
             }
@@ -216,7 +217,7 @@ function OrderSummary() {
   }, [success]);
 
   return (
-    <div>
+    <div className="order-summary-container">
       <h1>Order Summary</h1>
       <div>
         <h2>Selected Items:</h2>
@@ -281,7 +282,7 @@ function OrderSummary() {
         )}
 
         {paymentMethod === 'payAtDoor' && (
-          <p style={{ color: 'blue' }}>
+          <p className="info">
             Please have your payment ready at the door.
           </p>
         )}
@@ -291,10 +292,10 @@ function OrderSummary() {
 
       <h1>Invoice</h1>
 
-      {tripError && !tripSuccess && <p style={{ color: 'red' }}>{tripError}</p>}
+      {tripError && !tripSuccess && <p className="error">{tripError}</p>}
       {tripSuccess && (
-        <div>
-          <p style={{ color: 'green' }}>Trip submitted successfully!</p>
+        <div className="section">
+          <p className="success">Trip record submitted successfully!</p>
           {tripDetails && (
             <div>
               <h2>Trip Details</h2>
@@ -309,10 +310,10 @@ function OrderSummary() {
         </div>
       )}
 
-      {shoppingError && !shoppingSuccess && <p style={{ color: 'red' }}>{shoppingError}</p>}
+      {shoppingError && !shoppingSuccess && <p className="error">{shoppingError}</p>}
       {shoppingSuccess && (
-        <div>
-          <p style={{ color: 'green' }}>Shopping record created successfully!</p>
+        <div className="section">
+          <p className="success">Shopping record created successfully!</p>
           {shoppingDetails && (
             <div>
               <h2>Receipt</h2>

@@ -1,6 +1,48 @@
-input {
-    margin: 5px;
+.account-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+    font-family: sans-serif;
 }
-button {
-    margin: 5px;
+
+.account-container h1 {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+}
+
+.account-container h2 {
+    font-size: 1.4rem;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.account-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.account-container button {
+    padding: 10px 20px;
+    margin: 8px 6px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.account-container button:hover {
+    background-color: #0056b3;
+}
+
+.account-container .button-group {
+    margin-top: 15px;
 }
