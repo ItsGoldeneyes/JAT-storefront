@@ -15,6 +15,7 @@ import Reviews from './Reviews';
 const container = document.getElementById('root');
 const root = createRoot(container);
 
+// Render the Single Page Application
 root.render(
   <React.StrictMode>
     <BrowserRouter>

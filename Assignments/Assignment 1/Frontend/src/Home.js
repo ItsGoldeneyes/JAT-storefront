@@ -9,6 +9,7 @@ function Home() {
   const [droppedItems, setDroppedItems] = useState([]);
   const [initialLoad, setInitialLoad] = useState(true);
 
+  // Get inventory items from the backend
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -32,6 +33,7 @@ function Home() {
     fetchItems();
   }, [selectedValue]);
 
+  // Cart is stored in localstorage, load it when page is loaded
   useEffect(() => {
     const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
     // console.log("Loaded items from localStorage:", storedItems);

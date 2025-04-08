@@ -18,7 +18,8 @@ function Cart() {
   const taxRate = 0.13;
 
   const navigate = useNavigate();
-
+  
+  // Cart items are stored in localstorage, load them when page is loaded
   useEffect(() => {
     const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
     // console.log("Loaded items from localStorage:", storedItems);
@@ -33,6 +34,7 @@ function Cart() {
     }
   }, [cartItems, initialLoad]);
 
+  // Calculate the total price of selected items in the cart
   useEffect(() => {
     const totalItemPrice = cartItems.reduce((total, item) => {
       if (item.selected) {
@@ -46,10 +48,11 @@ function Cart() {
     setTotalPrice(newTotalPrice);
   }, [cartItems, deliveryPrice]);
 
+  // Calculate the delivery price. If shipping type is express, increase the price by 50%
   useEffect(() => {
     if (route) {
       const { distance, duration } = route;
-      let calculatedDeliveryPrice = (distance.value * 0.0005).toFixed(2);
+      let calculatedDeliveryPrice = (distance.value * 0.005).toFixed(2);
       
       if (shippingType === 'express') {
         calculatedDeliveryPrice *= 1.5;
@@ -74,6 +77,7 @@ function Cart() {
     }
   }, [route, shippingType]);
 
+  // Cart methods. Must select items before confirming order
   const toggleSelect = (index) => {
     const updatedCart = [...cartItems];
     updatedCart[index].selected = !updatedCart[index].selected;
@@ -99,6 +103,7 @@ function Cart() {
     setCartItems(updatedCart);
   };
 
+  // Send order details to the backend
   const handleConfirmOrder = () => {
     navigate('/order-summary', {
       state: {

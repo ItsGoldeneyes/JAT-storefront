@@ -12,6 +12,7 @@ function Orders() {
 
   const backend = 'http://localhost/Assignment1/';
 
+  // Verify the user's access token to set the user ID and access level
   const verifyAccessToken = async () => {
     const token = Cookies.get('access_token');
     if (token) {

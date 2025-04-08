@@ -22,7 +22,8 @@ function OrderSummary() {
     cvv: '',
   });
 
-  const [paymentMethod, setPaymentMethod] = useState('creditCard'); // Default to credit card
+  // Default payment method is credit card
+  const [paymentMethod, setPaymentMethod] = useState('creditCard');
 
   const handlePaymentMethodChange = (event) => {
     setPaymentMethod(event.target.value);
@@ -37,6 +38,7 @@ function OrderSummary() {
   const [shoppingSuccess, setShoppingSuccess] = useState(false);
   const [shoppingDetails, setShoppingDetails] = useState(null);
 
+  // Can't place order if user isn't logged in
   const getUserId = async () => {
     const token = Cookies.get('access_token');
     if (!token) {
