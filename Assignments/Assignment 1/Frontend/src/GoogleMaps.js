@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleMap, Marker, DirectionsRenderer, useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
+import './GoogleMaps.css';
 
 const containerStyle = { width: '100%', height: '400px' };
 
@@ -118,7 +119,7 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck, setSelectedStore }) =
   const availableTrucks = trucks.filter(truck => truck.Availability_Code === 'AVAILABLE');
 
   return (
-    <div>
+    <div className="shipping-container">
       <h2>Shipping</h2>
       <label htmlFor="store-select">Select Store:</label>
       <select id="store-select" onChange={handleStoreChange}>
@@ -127,6 +128,7 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck, setSelectedStore }) =
         ))}
       </select>
       {isLoaded && (
+        <div className="shipping-map">
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={currentPosition || selectedStorePosition}
@@ -136,6 +138,7 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck, setSelectedStore }) =
           {currentPosition && <Marker position={currentPosition} label="You" />}
           {selectedStorePosition && <Marker position={selectedStorePosition} label="Store" />}
         </GoogleMap>
+        </div>
       )}
       <div>
         <h3>Available Trucks</h3>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import './Reviews.css';
 
 function Reviews() {
   const [purchasedItems, setPurchasedItems] = useState([]);
@@ -104,7 +105,7 @@ function Reviews() {
   };
 
   return (
-    <div>
+    <div className="reviews-page">
       <h1>Reviews</h1>
       <h2>Select an item to review:</h2>
       <ul>
@@ -127,7 +128,7 @@ function Reviews() {
           <ul>
             {reviews.length > 0 ? (
               reviews.map((review, index) => (
-                <li key={index}>
+                <li key={index} className="review-entry">
                   <p>{review.review}</p>
                   <p>Rating: {review.ranking_num}</p>
                 </li>
@@ -139,15 +140,17 @@ function Reviews() {
           
           <div>
             <h3>Rate this item:</h3>
+            <div className="rating-buttons">
             {[1, 2, 3, 4, 5].map((num) => (
               <button
                 key={num}
                 onClick={() => setRating(num)}
-                style={{ fontWeight: rating === num ? 'bold' : 'normal' }}
+                className={rating === num ? 'selected' : ''}
               >
                 {num}
               </button>
             ))}
+            </div>
           </div>
 
           <textarea

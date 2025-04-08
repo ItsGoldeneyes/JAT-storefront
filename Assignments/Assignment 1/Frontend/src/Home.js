@@ -79,7 +79,7 @@ function Home() {
 
 
   return (
-    <div>
+    <div className='home-container'>
       <h1>Welcome to JAT</h1>
       <div>
       <label htmlFor="dropdown">Sort by:</label>
@@ -122,7 +122,7 @@ function Home() {
         <ul>
           {droppedItems.map((item, index) => (
             <li key={index}>
-              <strong>{item.Item_name}</strong> - ${item.Price} (Quantity: {item.quantity})
+              <strong>{item.Item_name}</strong> ${item.Price} × {item.quantity}
               <img src={item.Image_Path} alt={item.Item_name} width="40" />
             </li>
           ))}

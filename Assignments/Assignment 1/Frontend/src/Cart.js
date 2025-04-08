@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GoogleMapsComponent from './GoogleMaps';
+import './Cart.css'
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -116,7 +117,7 @@ function Cart() {
   };
 
   return (
-    <div>
+    <div className="cart-container">
       <h1>Shopping Cart</h1>
       {cartItems.length === 0 ? (
         <p>Your cart is currently empty.</p>
@@ -166,6 +167,10 @@ function Cart() {
         />
       </div>
       <div>
+        <h3>Delivery Truck:</h3>
+        {deliveryTruck && <p>Available Truck: {deliveryTruck}</p>}
+      </div>
+      <div>
         {route && (
           <>
             <p>Distance to store: {distance}</p>
@@ -175,25 +180,6 @@ function Cart() {
             )}
           </>
         )}
-      </div>
-      <div>
-        <h3>Subtotal (Items): ${cartItems.reduce((total, item) => {
-          if (item.selected) {
-            return total + item.Price * (item.quantity || 1);
-          }
-          return total;
-        }, 0).toFixed(2)}</h3>
-        <h3>Tax (13%): ${(cartItems.reduce((total, item) => {
-          if (item.selected) {
-            return total + item.Price * (item.quantity || 1);
-          }
-          return total;
-        }, 0) * taxRate).toFixed(2)}</h3>
-        <h2>Total Price: ${totalPrice}</h2>
-      </div>
-      <div>
-        <h3>Delivery Truck:</h3>
-        {deliveryTruck && <p>Available Truck: {deliveryTruck}</p>}
       </div>
       <div>
         <h3>Starting Location:</h3>
@@ -211,8 +197,23 @@ function Cart() {
           <option value="express">Express Shipping</option>
         </select>
       </div>
+      <div>
+        <h3>Subtotal (Items): ${cartItems.reduce((total, item) => {
+          if (item.selected) {
+            return total + item.Price * (item.quantity || 1);
+          }
+          return total;
+        }, 0).toFixed(2)}</h3>
+        <h3>Tax (13%): ${(cartItems.reduce((total, item) => {
+          if (item.selected) {
+            return total + item.Price * (item.quantity || 1);
+          }
+          return total;
+        }, 0) * taxRate).toFixed(2)}</h3>
+        <h2>Total Price: ${totalPrice}</h2>
+      </div>
 
-      <button onClick={handleConfirmOrder}>Confirm Order</button>
+      <button className="confirm-order" onClick={handleConfirmOrder}>Confirm Order</button>
     </div>
   );
 }

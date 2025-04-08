@@ -1,6 +1,5 @@
 import React from 'react';
 import './About.css';
-// about the team lol
 function About() {
   return (
     <div className="about">
@@ -10,20 +9,20 @@ function About() {
       
         <div className="person">
           <img src="assets/jessica.jpg" alt="Jessica Zhu" />
-          <p>Jessica Zhu</p>
-          <p>E-mail: jessica.zhu@torontomu.ca</p>
+          <p className="name">Jessica Zhu</p>
+          <p>jessica.zhu@torontomu.ca</p>
         </div>
 
-        <div>
+        <div className="person">
           <img src="assets/adam.jpg" alt="Adam Cameron" />
-          <p>Adam </p>
-          <p>E-mail: adam.cameron@torontomu.ca</p>
+          <p className="name">Adam Cameron</p>
+          <p>adam.cameron@torontomu.ca</p>
         </div>
 
-        <div>
+        <div className="person">
           <img src="assets/thao_nguyen.jpeg" alt="Thao Nguyen" />
-          <p>Thao Nguyen</p>
-          <p>E-mail: thao2.nguyen@torontomu.ca</p>
+          <p className="name">Thao Nguyen</p>
+          <p>thao2.nguyen@torontomu.ca</p>
         </div>
       </div>
     </div>

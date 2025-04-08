@@ -181,7 +181,7 @@ function Account() {
   };
 
   return (
-    <div>
+    <div className="account-container">
       <h1>Account</h1>
       {!isSignedIn ? (
         <div>
