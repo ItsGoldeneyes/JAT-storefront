@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './DBMaintain.css';
 
 function DBMaintain() {
     const [tables, setTables] = useState([]);
@@ -112,7 +113,7 @@ function DBMaintain() {
     };
 
     return (
-        <div>
+        <div className="db-maintain-container">
             <h1>DB Maintain</h1>
             <div>
                 <label>
