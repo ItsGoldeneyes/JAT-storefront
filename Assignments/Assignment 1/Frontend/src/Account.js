@@ -49,6 +49,7 @@ function Account() {
     fetchAccountDetails(Cookies.get('access_token'));
   }, []);
 
+  // Fetch account details from the backend. Runs automatically after login/signup
   const fetchAccountDetails = async (token) => {
     try {
       const response = await axios.get(backend + 'get_account_details.php', {
@@ -72,6 +73,7 @@ function Account() {
     }
   };
 
+  // Sign in with username and password
   const handleSignIn = async () => {
     try {
       console.log(`Attempting sign-in with login ID: ${loginId} and password: ${password}`);
@@ -101,6 +103,7 @@ function Account() {
     }
   };
 
+  // Sign up with username, password, and account details
   const handleSignUp = async () => {
     try {
       console.log(`Attempting sign-up with login ID: ${loginId} and password: ${password}`);
@@ -135,6 +138,7 @@ function Account() {
     }
   };
 
+  // If user signs out, remove access token and wipe cart items from local storage
   const handleSignOut = () => {
     setIsSignedIn(false);
     Cookies.remove('access_token');
@@ -148,6 +152,7 @@ function Account() {
     localStorage.removeItem('cartItems');
   };
 
+  // Update account details, including password if text box is filled in.
   const handleUpdateAccount = async () => {
     const token = Cookies.get('access_token');  
     try {

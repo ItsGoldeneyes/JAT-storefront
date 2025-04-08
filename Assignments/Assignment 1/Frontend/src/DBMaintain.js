@@ -9,7 +9,7 @@ function DBMaintain() {
     const [result, setResult] = useState('');
 
     useEffect(() => {
-        // Fetch table names from the backend
+        // Fetch table names
         axios.get('http://localhost/Assignment1/dbmaintain.php?action=getTables')
             .then(response => {
                 if (response.data.tables) {
@@ -75,37 +75,40 @@ function DBMaintain() {
     };
 
     const handleExecute = () => {
-        axios.post('http://localhost/Assignment1/dbmaintain.php', {
-            action: 'execute',
-            query: query,
-            table: selectedTable
-        })
-        .then(response => {
-            if (response.data.updatedTable) {
-                const tableData = response.data.updatedTable;
-                if (Array.isArray(tableData) && tableData.length > 0) {
-                    let tableHtml = "<table border='1'><tr>";
-                    Object.keys(tableData[0]).forEach(key => {
-                        tableHtml += `<th>${key}</th>`;
-                    });
-                    tableHtml += "</tr>";
-                    tableData.forEach(row => {
-                        tableHtml += "<tr>";
-                        Object.values(row).forEach(value => {
-                            tableHtml += `<td>${value}</td>`;
+        console.log("Executing query:", query);
+        console.log("On table:", selectedTable);
+
+        axios.get(`http://localhost/Assignment1/dbmaintain.php?action=execute&query=${encodeURIComponent(query)}&table=${encodeURIComponent(selectedTable)}`)
+            .then(response => {
+                console.log("Response received:", response);
+
+                if (response.data.results) {
+                    const tableData = response.data.results;
+                    if (Array.isArray(tableData) && tableData.length > 0) {
+                        let tableHtml = "<table border='1'><tr>";
+                        Object.keys(tableData[0]).forEach(key => {
+                            tableHtml += `<th>${key}</th>`;
                         });
                         tableHtml += "</tr>";
-                    });
-                    tableHtml += "</table>";
-                    setResult(tableHtml);
+                        tableData.forEach(row => {
+                            tableHtml += "<tr>";
+                            Object.values(row).forEach(value => {
+                                tableHtml += `<td>${value}</td>`;
+                            });
+                            tableHtml += "</tr>";
+                        });
+                        tableHtml += "</table>";
+                        setResult(tableHtml);
+                    } else {
+                        setResult("0 results");
+                    }
                 } else {
-                    setResult("0 results");
+                    setResult(response.data.results || "No data returned - Please check your query!");
                 }
-            } else {
-                setResult(response.data.updatedTable || "No data returned");
-            }
-        })
-        .catch(error => console.error('Error executing query:', error));
+            })
+            .catch(error => {
+                console.error('Error executing query:', error);
+            });
     };
 
     return (

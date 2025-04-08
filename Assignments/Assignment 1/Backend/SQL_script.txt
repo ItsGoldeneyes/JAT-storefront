@@ -125,8 +125,8 @@ INSERT INTO Store (name, store_code, latitude, longitude) VALUES
 ('Store 2', 'STORE2', 44.00000000, -80.00000000);
 
 INSERT INTO users (login_id, password, salt, access_level, city_code, balance) VALUES
-('adam!', '64982384ef663ff4888c30bfaa9926d3', '1y26cx2tumkQu253', 'admin', 'TOR', 100.00),
-('adamnotadmin', '64982384ef663ff4888c30bfaa9926d3', '1y26cx2tumkQu253', 'user', 'TOR', 100.00),
+('adam!', '2dfb2c44e4ced138cc361f353994629d', 'PubMpPZl/tnYkDcA', 'admin', 'TOR', 100.00),
+('adamnotadmin', '2dfb2c44e4ced138cc361f353994629d', 'PubMpPZl/tnYkDcA', 'user', 'TOR', 100.00),
 ('jess', '2dfb2c44e4ced138cc361f353994629d', 'PubMpPZl/tnYkDcA', 'admin', 'TOR', 200.00),
 ('thao', '980dbad5dd8867d03037a172fc745c00', 'u0OPDXjh28Jjd6BI', 'admin', 'TOR', 300.00);
 
