@@ -15,7 +15,7 @@ const GoogleMapsComponent = ({ setRoute, setDeliveryTruck, setSelectedStore }) =
   const directionsRendererRef = useRef(null);
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyDTkwyTSOq5fh3ta9EZaIJRs1JNRUQWNbY" 
+    googleMapsApiKey: "API_KEY_HERE" 
   });
 
   useEffect(() => {
